@@ -17,5 +17,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Usa solo los recursos de /public. No inventes textos, colores, fuentes ni imágenes.
 - Las animaciones se hacen por código y son suaves (ver "Principios de movimiento" en DESIGN.md). Respeta prefers-reduced-motion.
 - Trabaja una tarea a la vez y no toques otras secciones.
+- No modifiques archivos de secciones ya terminadas (Header, Hero) salvo que se pida de forma explícita. Si crees que hay que cambiarlos, pregunta primero.
 - Al terminar, resume en pocas líneas qué archivos cambiaste y cómo probarlo en http://localhost:3000.
 - Si algo está marcado como PENDIENTE o falta, pregunta en vez de adivinar.

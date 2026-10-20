@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Clientes from "@/components/Clientes";
+import Clients from "@/components/Clients";
+import Divider from "@/components/Divider";
+import Manifesto from "@/components/Manifesto";
 
 const FONDOS = [
   {
@@ -47,7 +49,9 @@ export default function Home() {
           <Hero />
           <Header />
         </div>
-        <Clientes />
+        <Clients />
+        <Divider />
+        <Manifesto />
       </main>
     </div>
   );

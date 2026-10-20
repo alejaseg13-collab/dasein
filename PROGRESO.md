@@ -2,24 +2,27 @@
 
 ## 1) Secciones terminadas
 - **Header** (`components/Header.tsx`) — sin cambios.
-- **Hero** (`components/Hero.tsx`) — sin cambios; ya aprobado.
+- **Hero** (`components/Hero.tsx`) — sin cambios; verificado intacto en navegador.
 - Fondos apilados en `app/page.tsx` (fondo-1/2/3) — sin cambios.
+- **Sección 3 — Nuestros clientes** (`components/Clients.tsx`):
+  - Título "Nuestros *clientes*" (Swarsh Daisy Italic), subtítulo 19 px en una línea con "clientes satisfechos" en negrita.
+  - Cinta de logos a sangre en bucle infinito (`translateX 0 → -50%`, CSS), pausa al pasar el mouse, se detiene con `prefers-reduced-motion`, `overflow-hidden` + track `absolute` (evita scroll horizontal).
+  - Logos: textos de relleno con estilo por marca (BURBERRY, adidas, ENSIGNA, STATIONERY, MEXICANA, gpsnvision, LOGISTICS). **Falta:** sustituir por los SVG reales de los clientes cuando estén en `/public/logo`.
+- **Sección 4 — Divider** (`components/Divider.tsx`):
+  - "© 2026." + isotipo + icono de dos líneas (superior más corta), línea tenue sobre la fila y línea clara debajo.
+  - El isotipo no existe suelto en `/public/logo`: se inlinearon los 8 rects exactos del marca de cruz de `Logo Dasein vertical studio.svg`. Si prefieres el logo vertical completo, avisar.
+- **Sección 5 — Manifiesto** (`components/Manifesto.tsx`):
+  - Etiqueta, titular Clash Display 700 (`next/font/local`, no se tocó `layout.tsx`), "SOMOS UNA" + texto lateral + botón "Hablemos" (flecha se mueve en hover), "AGENCIA DIGITAL", bloque cian + 3 barras + "GANADORA".
+  - Animaciones: palabras con desenfoque al entrar en viewport, bloque cian se desliza; respetan `prefers-reduced-motion`.
+  - En móvil el bloque cian usa tamaños fijos legibles y "GANADORA" salta a su propia línea.
+- `app/page.tsx`: importa y monta `Clients → Divider → Manifesto` después del hero (único cambio ahí). `components/Clientes.tsx` borrado.
 
-## 2) Secciones a medias
-- **Sección 3 — Nuestros clientes** (`components/Clientes.tsx`):
-  - Hecho: título "Nuestros *clientes*" (Swarsh Daisy Italic) y subtítulo con "clientes satisfechos" en negrita, con fundido de entrada.
-  - Estado: NO tiene la cinta de logos (solo un TODO). No se ha ajustado aún a `design/02-clientes-manifiesto.png`.
-  - Pendiente de ajuste (medido sobre la referencia): subtítulo ~19 px (hoy 15 px), una sola línea; separación con los logos ~88 px.
-- **Sección 4 — Divider**: NO existe (`components/Divider.tsx` sin crear).
-- **Sección 5 — Manifiesto**: NO existe (`components/Manifesto.tsx` sin crear).
+## 2) Verificado en navegador (Chrome headless)
+- 1440 px: sin scroll horizontal (`scrollWidth == clientWidth`), hero idéntico al anterior.
+- 390 px (móvil): sin scroll horizontal, secciones apiladas correctamente.
+- `prefers-reduced-motion`: el contenido queda visible (sin animación de por vida).
 
-## 3) Qué falta por hacer
-- **Clients.tsx**: crear/renombrar desde `Clientes.tsx`, añadir la cinta de logos en bucle infinito (duplicar lista, translateX 0 → -50 %, pausa con mouse, se detiene con `prefers-reduced-motion`, `overflow-hidden`), textos de relleno (BURBERRY, adidas, ENSIGNA, STATIONERY, MEXICANA, gpsnvision, LOGISTICS) con TODO para sustituir por SVG.
-- **Divider.tsx**: línea fina + "© 2026." + isotipo + icono de dos líneas. Nota: en `/public/logo` NO hay isotipo suelto; la opción es extraer los 8 rects del isotipo desde `Logo Dasein vertical.svg` (inline) o usar el logo vertical pequeño → confirmar con el usuario.
-- **Manifesto.tsx**: etiqueta, titular de 3 líneas (Clash Display ~117 px, cargar con `next/font/local` en el componente porque no se puede tocar `layout.tsx`), bloque cian + 3 barras + "GANADORA", texto "Cuéntanos que tienes en mente" y botón "Hablemos".
-- `app/page.tsx`: importar y montar Clients → Divider → Manifesto después del hero (único cambio permitido ahí).
-- Borrar `components/Clientes.tsx` al renombrar a `Clients.tsx`.
-- Verificar: sin scroll horizontal a 1440 px y hero intacto.
-- Secciones 6 a 13 (servicios, red, trabajos, equipo, contacto, testimonios, CTA, footer): pendientes.
-
-Nota de trabajo de esta sesión: solo hubo análisis de la referencia (`design/02-clientes-manifiesto.png`) y mediciones; no se modificó ningún archivo de código.
+## 3) Pendiente (siguientes tareas)
+- Secciones 6 a 13 (servicios, red, trabajos, equipo, contacto, testimonios, CTA, footer).
+- Logos reales de clientes en SVG (`/public/logo`).
+- El manifiesto de la referencia parece traer "GANADORA" en un ancho distinto al de Clash 700; se dejó la mejor versión con la fuente actual.

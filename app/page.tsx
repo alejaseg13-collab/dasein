@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import IntroProvider from "@/components/IntroProvider";
 import Clients from "@/components/Clients";
 import Divider from "@/components/Divider";
 import Manifesto from "@/components/Manifesto";
@@ -47,8 +48,10 @@ export default function Home() {
       </div>
       <main className="relative z-10 col-start-1 row-start-1 w-full self-start">
         <div className="relative">
-          <Hero />
-          <Header />
+          <IntroProvider>
+            <Hero />
+            <Header />
+          </IntroProvider>
         </div>
         <Clients />
         <Divider />

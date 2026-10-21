@@ -10,10 +10,15 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useIntro } from "@/components/IntroProvider";
 
 const EASE_OUT = "easeOut" as const;
+const EASE_INOUT = [0.37, 0, 0.63, 1] as const;
+const CLIP_RECT = "inset(14% 10% 32% 46% round 16px)";
+const CLIP_FULL = "inset(0% 0% 0% 0% round 0px)";
 
 export default function Hero() {
+  const { running } = useIntro();
   const reduce = useReducedMotion();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -35,8 +40,8 @@ export default function Hero() {
   const astronautaZoom = reduce
     ? {}
     : {
-        animate: { scale: [1, 1.08] },
-        transition: { duration: 20, repeat: Infinity, repeatType: "reverse" as const, ease: "easeInOut" as const },
+        animate: { scale: [1, 1.12] },
+        transition: { duration: 6, repeat: Infinity, repeatType: "reverse" as const, ease: "easeInOut" as const },
       };
 
   const nieblaDrift = reduce
@@ -80,43 +85,52 @@ export default function Hero() {
       className="relative min-h-[100svh] w-full overflow-hidden bg-[#08090b] md:aspect-[1512/1323]"
     >
       <motion.div
+        data-intro-clip
         className="absolute inset-0"
-        style={{ x, y, transformOrigin: "53% 33%" }}
-        {...astronautaZoom}
+        initial={{ clipPath: CLIP_RECT }}
+        animate={{ clipPath: running ? CLIP_FULL : CLIP_RECT }}
+        transition={{ duration: 0.5, ease: EASE_INOUT, delay: 0.48 }}
       >
-        <Image
-          src="/images/hero-astronauta.webp"
-          alt=""
-          width={2752}
-          height={1536}
-          unoptimized
-          preload
-          className="absolute left-[-10.5%] top-[-3.3%] hidden w-[111%] max-w-none md:block"
-          style={{
-            maskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)",
-          }}
-        />
-        <Image
-          src="/images/hero-astronauta-cuadro.webp"
-          alt=""
-          width={1600}
-          height={1500}
-          unoptimized
-          preload
-          className="absolute inset-0 h-full w-full object-cover object-[58%_45%] md:hidden"
-        />
         <motion.div
-          className="absolute left-[53%] top-[33%] h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(200,255,252,0.5),rgba(110,240,230,0.12),transparent)] blur-[40px] mix-blend-screen"
-          {...glowPulse}
-        />
+          className="absolute inset-0"
+          style={{ x, y, transformOrigin: "53% 33%" }}
+          {...astronautaZoom}
+        >
+          <Image
+            src="/images/hero-astronauta.webp"
+            alt=""
+            width={2752}
+            height={1536}
+            unoptimized
+            preload
+            className="absolute left-[-10.5%] top-[-3.3%] hidden w-[111%] max-w-none md:block"
+            style={{
+              maskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)",
+            }}
+          />
+          <Image
+            src="/images/hero-astronauta-cuadro.webp"
+            alt=""
+            width={1600}
+            height={1500}
+            unoptimized
+            preload
+            className="absolute inset-0 h-full w-full object-cover object-[58%_45%] md:hidden"
+          />
+          <motion.div
+            className="absolute left-[53%] top-[33%] h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(200,255,252,0.5),rgba(110,240,230,0.12),transparent)] blur-[40px] mix-blend-screen"
+            {...glowPulse}
+          />
+        </motion.div>
       </motion.div>
 
       <div className="relative z-30 px-6 md:px-12">
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.1 }}
+          data-intro
+          initial={{ opacity: 0, y: 8 }}
+          animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+          transition={{ duration: 0.2, ease: EASE_OUT, delay: 0.55 }}
           className="flex items-center gap-3 pt-[28vh] md:pt-[clamp(180px,19svh,260px)]"
         >
           <span className="flex h-[17px] w-[17px] shrink-0 items-center justify-center rounded-full border border-white/80">
@@ -129,32 +143,38 @@ export default function Hero() {
 
         <h1 className="mt-[18px] max-w-[720px] text-[40px] font-light leading-[0.98] tracking-[-0.015em] text-white md:text-[clamp(56px,4.6vw,70px)] md:leading-[1.11]">
           {["La presencia", "no se encuentra,"].map((line, i) => (
-            <motion.span
-              key={line}
-              className="block"
-              initial={reduce ? false : { opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: EASE_OUT, delay: 0.2 + i * 0.15 }}
-            >
-              {line}
-            </motion.span>
+            <span key={line} className="block overflow-hidden pb-[0.1em] -mb-[0.1em]">
+              <motion.span
+                data-intro
+                className="block"
+                initial={{ y: "110%" }}
+                animate={{ y: running ? "0%" : "110%" }}
+                transition={{ duration: 0.35, ease: EASE_OUT, delay: 0.62 + i * 0.075 }}
+              >
+                {line}
+              </motion.span>
+            </span>
           ))}
-          <motion.span
-            className="mt-[6px] block font-daisy text-[42px] italic leading-[1.02] md:text-[clamp(68px,5.6vw,85px)]"
-            initial={reduce ? false : { opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE_OUT, delay: 0.5 }}
-          >
-            Se diseña.
-          </motion.span>
+          <span className="mt-[6px] block overflow-hidden pb-[0.1em] -mb-[0.1em]">
+            <motion.span
+              data-intro
+              className="block font-daisy text-[42px] italic leading-[1.02] md:text-[clamp(68px,5.6vw,85px)]"
+              initial={{ y: "110%" }}
+              animate={{ y: running ? "0%" : "110%" }}
+              transition={{ duration: 0.35, ease: EASE_OUT, delay: 0.77 }}
+            >
+              Se diseña.
+            </motion.span>
+          </span>
         </h1>
       </div>
 
       <div className="absolute inset-x-0 bottom-10 z-30 flex flex-col gap-6 px-6 md:contents">
         <motion.div
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.75 }}
+          data-intro
+          initial={{ opacity: 0, y: 10 }}
+          animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ duration: 0.4, ease: EASE_OUT, delay: 0.95 }}
           className="flex flex-col gap-5 md:absolute md:left-12 md:top-[53%] md:flex-row md:items-center md:gap-7"
         >
           <div className="max-w-[250px]">
@@ -184,10 +204,11 @@ export default function Hero() {
         <div className="md:absolute md:left-1/2 md:top-[57%] md:-translate-x-1/2">
           <motion.button
             type="button"
+            data-intro
             onClick={scrollToNext}
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, ease: EASE_OUT, delay: 1.05 }}
+            initial={{ opacity: 0 }}
+            animate={running ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.3, ease: EASE_OUT, delay: 1 }}
             className="flex items-center gap-3"
           >
             <span className="text-[13px] font-light text-white">Desliza y conoce</span>
@@ -201,19 +222,20 @@ export default function Hero() {
         </div>
 
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.95 }}
-          className="md:absolute md:right-12 md:top-[52%] md:w-[348px]"
+          data-intro
+          initial={{ opacity: 0, y: 16 }}
+          animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.35, ease: EASE_OUT, delay: 1.1 }}
+          className="md:absolute md:right-12 md:top-[52%] md:w-[316px]"
         >
-          <div className="flex items-center gap-3 rounded-[6px] bg-white p-3">
+          <div className="flex items-center gap-3 rounded-[6px] bg-white p-2.5">
             <div
-              className="h-[78px] w-[78px] shrink-0 rounded-[6px] bg-[url('/images/hero-astronauta.webp')] bg-[length:200%] bg-[position:80%_48%]"
+              className="h-[66px] w-[66px] shrink-0 rounded-[6px] bg-[url('/images/hero-astronauta.webp')] bg-[length:200%] bg-[position:80%_48%]"
               aria-hidden="true"
             />
             <div>
-              <p className="text-[15px] font-bold leading-none text-black">Identidad</p>
-              <p className="mt-2 text-[12.5px] leading-[14px] text-[#666666]">
+              <p className="text-[14px] font-bold leading-none text-black">Identidad</p>
+              <p className="mt-1.5 text-[12px] leading-[13px] text-[#666666]">
                 Narrativa, naming, sistemas visuales y estrategia de marca según tus
                 necesidades.
               </p>

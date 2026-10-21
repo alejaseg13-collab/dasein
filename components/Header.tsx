@@ -2,15 +2,18 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { useIntro } from "@/components/IntroProvider";
 
 export default function Header() {
   const reduce = useReducedMotion();
+  const { running } = useIntro();
 
   return (
     <motion.header
-      initial={reduce ? false : { opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1, ease: "easeOut" }}
+      data-intro
+      initial={{ opacity: 0, y: -10 }}
+      animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+      transition={{ duration: 0.3, ease: "easeOut", delay: 0.45 }}
       className="absolute inset-x-0 top-0 z-40 px-5 pt-7 sm:px-6 md:px-12 md:pt-[38px]"
     >
       <div className="flex items-center justify-between gap-6">
@@ -39,8 +42,14 @@ export default function Header() {
 
         <motion.a
           href="#contacto"
+          data-intro
+          initial={{ opacity: 0 }}
+          animate={running ? { opacity: 1 } : { opacity: 0 }}
           whileHover={reduce ? undefined : { y: -4 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          transition={{
+            opacity: { duration: 0.15, ease: "easeOut", delay: 0.68 },
+            y: { type: "spring", stiffness: 300, damping: 20 },
+          }}
           className="inline-flex shrink-0 items-center gap-2.5 rounded-[10px] bg-white px-4 py-2.5 text-[13px] font-medium text-[#00272c] transition-colors hover:bg-white/90 sm:px-[18px] sm:py-3 sm:text-[13.5px]"
         >
           Empezar proyecto

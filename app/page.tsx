@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Clients from "@/components/Clients";
 import Divider from "@/components/Divider";
 import Manifesto from "@/components/Manifesto";
+import Services from "@/components/Services";
 
 const FONDOS = [
   {
@@ -52,6 +53,7 @@ export default function Home() {
         <Clients />
         <Divider />
         <Manifesto />
+        <Services />
       </main>
     </div>
   );

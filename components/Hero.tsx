@@ -1,8 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback } from "react";
-import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { useCallback, useRef } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 
 const EASE_OUT = "easeOut" as const;
 
@@ -46,8 +53,29 @@ export default function Hero() {
         transition: { duration: 6, repeat: Infinity, ease: "easeInOut" as const },
       };
 
+  const shine = reduce
+    ? {}
+    : {
+        animate: { x: ["-100%", "100%"] },
+        transition: { duration: 2.6, repeat: Infinity, ease: "linear" as const },
+      };
+
+  const scrollToNext = useCallback(() => {
+    const next = document.querySelectorAll("section")[1];
+    next?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }, [reduce]);
+
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const fogOpacity = useTransform(scrollYProgress, [0, 0.45], [0, 1]);
+  const fogY = useTransform(scrollYProgress, [0, 0.45], ["0%", reduce ? "0%" : "-6%"]);
+
   return (
     <section
+      ref={heroRef}
       onMouseMove={onMouseMove}
       className="relative min-h-[100svh] w-full overflow-hidden bg-[#08090b] md:aspect-[1512/1323]"
     >
@@ -127,18 +155,50 @@ export default function Hero() {
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.75 }}
-          className="md:absolute md:left-12 md:top-[55%] md:max-w-[290px]"
-          style={{
-            maskImage: "linear-gradient(to right, black 25%, transparent 92%)",
-            WebkitMaskImage: "linear-gradient(to right, black 25%, transparent 92%)",
-          }}
+          className="flex flex-col gap-5 md:absolute md:left-12 md:top-[53%] md:flex-row md:items-center md:gap-7"
         >
-          <div className="mb-[14px] h-px w-[110px] bg-white/40" />
-          <p className="text-[14px] font-light leading-[1.1] text-white/90 md:text-[13.5px] md:leading-[14.4px]">
-            Construimos identidades, productos, experiencias de usuario y mundos digitales para
-            tus proyectos más ambiciosos.
-          </p>
+          <div className="max-w-[250px]">
+            <div className="mb-[14px] h-px w-[250px] bg-white/50" />
+            <p className="text-[14px] font-light leading-[1.1] text-white md:text-[13.5px] md:leading-[14.4px]">
+              Construimos identidades, productos digitales, experiencias de usuario y mundos
+              completos para tus proyectos más ambiciosos.
+            </p>
+          </div>
+          <a
+            href="#contacto"
+            className="inline-flex w-fit shrink-0 items-center gap-2 rounded-[6px] bg-white px-[18px] py-[10px] text-[14px] font-medium text-[#1e726c] transition-colors hover:bg-white/90"
+          >
+            Discutir proyecto
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path
+                d="M3 11L11 3M11 3H4.5M11 3v6.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
         </motion.div>
+
+        <div className="md:absolute md:left-1/2 md:top-[57%] md:-translate-x-1/2">
+          <motion.button
+            type="button"
+            onClick={scrollToNext}
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, ease: EASE_OUT, delay: 1.05 }}
+            className="flex items-center gap-3"
+          >
+            <span className="text-[13px] font-light text-white">Desliza y conoce</span>
+            <span className="relative block h-px w-[46px] overflow-hidden bg-white/40">
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
+                {...shine}
+              />
+            </span>
+          </motion.button>
+        </div>
 
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 16 }}
@@ -146,15 +206,15 @@ export default function Hero() {
           transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.95 }}
           className="md:absolute md:right-12 md:top-[52%] md:w-[348px]"
         >
-          <div className="flex items-center gap-2.5 rounded-[12px] border border-white/20 bg-white/20 p-3 backdrop-blur-md">
+          <div className="flex items-center gap-3 rounded-[6px] bg-white p-3">
             <div
-              className="h-[78px] w-[78px] shrink-0 rounded-[8px] bg-[url('/images/hero-astronauta.webp')] bg-[length:200%] bg-[position:85%_50%]"
+              className="h-[78px] w-[78px] shrink-0 rounded-[6px] bg-[url('/images/hero-astronauta.webp')] bg-[length:200%] bg-[position:80%_48%]"
               aria-hidden="true"
             />
             <div>
-              <p className="text-[15px] font-semibold leading-none text-[#2b4242]">Identidad</p>
-              <p className="mt-2 text-[12.5px] font-light leading-[13.8px] text-white/80">
-                narrativa, naming, sistemas visuales y estrategia de marca según tus
+              <p className="text-[15px] font-bold leading-none text-black">Identidad</p>
+              <p className="mt-2 text-[12.5px] leading-[14px] text-[#666666]">
+                Narrativa, naming, sistemas visuales y estrategia de marca según tus
                 necesidades.
               </p>
             </div>
@@ -165,6 +225,8 @@ export default function Hero() {
       <motion.div
         className="pointer-events-none absolute bottom-0 left-[-19%] z-20 h-[48%] w-[138%]"
         style={{
+          opacity: fogOpacity,
+          y: fogY,
           maskImage: "linear-gradient(to top, black 0%, black 78%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(to top, black 0%, black 78%, transparent 100%)",
         }}

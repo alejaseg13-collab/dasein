@@ -6,6 +6,7 @@ import Clients from "@/components/Clients";
 import Divider from "@/components/Divider";
 import Manifesto from "@/components/Manifesto";
 import Services from "@/components/Services";
+import NetworkSection from "@/components/NetworkSection";
 
 const FONDOS = [
   {
@@ -57,6 +58,7 @@ export default function Home() {
         <Divider />
         <Manifesto />
         <Services />
+        <NetworkSection />
       </main>
     </div>
   );

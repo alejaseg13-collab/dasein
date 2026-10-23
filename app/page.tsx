@@ -8,6 +8,7 @@ import Manifesto from "@/components/Manifesto";
 import Services from "@/components/Services";
 import NetworkSection from "@/components/NetworkSection";
 import Projects from "@/components/Projects";
+import Stats from "@/components/Stats";
 
 const FONDOS = [
   {
@@ -61,6 +62,7 @@ export default function Home() {
         <Services />
         <NetworkSection />
         <Projects />
+        <Stats />
       </main>
     </div>
   );

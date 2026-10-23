@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 
 const EASE_OUT = "easeOut" as const;
 
@@ -95,31 +96,32 @@ export default function Clients() {
 
   return (
     <section className="relative z-10 -mt-10 px-6 pb-[110px] text-center md:-mt-[110px] md:px-12">
-      <motion.h2
-        initial={reduce ? false : { opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 1, ease: EASE_OUT }}
+      <Reveal
+        as="h2"
+        y={24}
+        amount={0.6}
+        duration={1}
         className="text-[36px] font-light leading-[1.05] text-white md:text-[68px]"
       >
         Nuestros <span className="font-daisy italic">clientes</span>
-      </motion.h2>
+      </Reveal>
 
-      <motion.p
-        initial={reduce ? false : { opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.8 }}
-        transition={{ duration: 1, ease: EASE_OUT, delay: 0.15 }}
+      <Reveal
+        as="p"
+        y={16}
+        amount={0.8}
+        duration={1}
+        delay={0.15}
         className="mx-auto mt-[16px] max-w-[620px] text-[14px] font-light leading-[1.5] text-white/70 md:mt-[24px] md:max-w-[860px] md:text-[19px]"
       >
         Ellos han confiado en nosotros. Sé también uno de nuestros{" "}
         <span className="font-semibold text-white">clientes satisfechos</span>.
-      </motion.p>
+      </Reveal>
 
       <motion.div
         initial={reduce ? false : { opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.4 }}
+        viewport={{ amount: 0.4 }}
         transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.3 }}
         className="dasein-marquee-host relative mx-[-24px] mt-[64px] h-[56px] overflow-hidden md:mx-[-48px] md:mt-[72px] md:h-[70px]"
       >

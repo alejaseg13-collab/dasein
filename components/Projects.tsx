@@ -4,17 +4,11 @@ import Image from "next/image";
 import { AnimatePresence, motion, MotionConfig, useInView, useReducedMotion } from "framer-motion";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { projects, type Project } from "@/data/projects";
+import Reveal from "@/components/Reveal";
 
 const EASE_OUT = "easeOut" as const;
 const EASE_INOUT = [0.65, 0, 0.35, 1] as const;
 const SLIDE = 0.9;
-
-const enter = (delay: number, y: number) => ({
-  initial: { opacity: 0, y },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.3 },
-  transition: { duration: 0.8, ease: EASE_OUT, delay },
-});
 
 function ProjectCard({ project }: { project: Project }) {
   return (
@@ -60,7 +54,7 @@ export default function Projects() {
   const [pitch, setPitch] = useState(0);
   const itemRef = useRef<HTMLDivElement>(null);
   const zoneRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(zoneRef, { once: true, amount: 0.2 });
+  const inView = useInView(zoneRef, { amount: 0.3 });
   const lastAdv = useRef(0);
 
   useLayoutEffect(() => {
@@ -111,21 +105,22 @@ export default function Projects() {
       <section className="relative z-10 overflow-hidden pb-[110px] pt-[80px] md:pb-[150px] md:pt-[100px]">
         <div className="px-[3.7%] md:grid md:grid-cols-[45%_1fr]">
           <h2 className="text-[13px] uppercase leading-[1.7] text-white md:text-[15px]">
-            <motion.span {...enter(0, 24)} className="block font-semibold">
+            <Reveal as="span" delay={0} className="block font-semibold">
               Echa un vistazo a algunos
-            </motion.span>
-            <motion.span {...enter(0.1, 24)} className="block font-normal">
+            </Reveal>
+            <Reveal as="span" delay={0.1} className="block font-normal">
               De nuestros trabajos
-            </motion.span>
+            </Reveal>
           </h2>
 
-          <motion.p
-            {...enter(0.2, 24)}
+          <Reveal
+            as="p"
+            delay={0.2}
             className="mt-6 text-[17px] font-light leading-[1.45] text-white/90 md:mt-0 md:text-[26px]"
           >
             Explora una selección de nuestros proyectos más recientes, creatividad, estrategia y
             experiencia de usuario.
-          </motion.p>
+          </Reveal>
         </div>
 
         <div
@@ -171,11 +166,11 @@ export default function Projects() {
               animate={{
                 x: -pos * pitch,
                 opacity: inView ? 1 : 0,
-                clipPath: inView ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+                y: inView ? 0 : 36,
                 transition: {
                   x: track.instant ? { duration: 0 } : { duration: SLIDE, ease: EASE_INOUT },
-                  opacity: { duration: 1, ease: EASE_OUT },
-                  clipPath: { duration: 1, ease: EASE_OUT },
+                  opacity: { duration: 0.9, ease: EASE_OUT },
+                  y: { duration: 0.9, ease: EASE_OUT },
                 },
               }}
               onAnimationComplete={onTrackComplete}
@@ -203,8 +198,11 @@ export default function Projects() {
             </motion.div>
           )}
 
-          <div
+          <motion.div
             className="absolute z-30 -translate-x-1/2 -translate-y-1/2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: reduce ? 1 : inView ? 1 : 0 }}
+            transition={{ duration: 0.9, ease: EASE_OUT }}
             style={{
               left: "calc(var(--marg) + var(--card) + var(--gap) / 2)",
               top: "calc(var(--card) / 1.64 / 2)",
@@ -223,7 +221,7 @@ export default function Projects() {
                 <Arrow />
               </span>
             </motion.button>
-          </div>
+          </motion.div>
         </div>
       </section>
     </MotionConfig>

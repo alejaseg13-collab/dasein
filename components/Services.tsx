@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, MotionConfig, useReducedMotion } from "framer-motion";
+import { MotionConfig, useReducedMotion } from "framer-motion";
 import { serviceCards, serviceList } from "@/data/services";
+import Reveal from "@/components/Reveal";
 
-const EASE_OUT = "easeOut" as const;
 const GAP_MOBILE = 16;
 const GAP_DESKTOP = 24;
 const STEP_DURATION = 700;
@@ -115,13 +115,6 @@ export default function Services() {
     [count, reduce, wrap],
   );
 
-  const enter = (delay: number, y: number) => ({
-    initial: { opacity: 0, y },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.3 },
-    transition: { duration: 0.8, ease: EASE_OUT, delay },
-  });
-
   const loopCards =
     count > 1
       ? [...serviceCards, ...serviceCards].map((card, i) => ({
@@ -138,20 +131,18 @@ export default function Services() {
 
         <div className="mt-[64px] flex flex-col gap-12 px-6 md:mt-[88px] md:flex-row md:gap-12 md:px-12">
           <div className="md:w-1/4">
-            <motion.h2
-              {...enter(0, 24)}
-              className="text-[36px] font-light leading-[1.04] text-white md:text-[64px]"
-            >
+            <Reveal as="h2" delay={0} className="text-[36px] font-light leading-[1.04] text-white md:text-[64px]">
               Nuestros
               <br />
               <span className="font-daisy italic">servicios</span>
-            </motion.h2>
+            </Reveal>
 
             <ul className="mt-10 md:mt-14">
               {serviceList.map((item, i) => (
-                <motion.li
+                <Reveal
                   key={item}
-                  {...enter(0.08 * (i + 1), 24)}
+                  as="li"
+                  delay={0.08 * (i + 1)}
                   className="group border-b border-white/30 transition-colors duration-300 hover:border-white/60"
                 >
                   <div className="flex items-center gap-3 py-[13px] md:py-[15px]">
@@ -176,7 +167,7 @@ export default function Services() {
                       />
                     </svg>
                   </div>
-                </motion.li>
+                </Reveal>
               ))}
             </ul>
           </div>
@@ -188,10 +179,12 @@ export default function Services() {
             >
               <div className="flex w-max gap-4 pb-4 pt-1 md:gap-6">
                 {loopCards.map(({ card, clone, delay }, i) => (
-                  <motion.div
+                  <Reveal
                     key={`${card.title}-${i}`}
+                    as="div"
                     aria-hidden={clone}
-                    {...enter(delay, 16)}
+                    delay={delay}
+                    y={16}
                     className="group w-[82vw] shrink-0 md:w-[320px]"
                     style={cardW ? { width: cardW } : undefined}
                   >
@@ -215,7 +208,7 @@ export default function Services() {
                         {card.subtitle}
                       </p>
                     </div>
-                  </motion.div>
+                  </Reveal>
                 ))}
               </div>
             </div>

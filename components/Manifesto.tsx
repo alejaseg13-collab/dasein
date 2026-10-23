@@ -17,14 +17,14 @@ export default function Manifesto() {
   const word = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, filter: "blur(18px)" },
     whileInView: { opacity: 1, filter: "blur(0px)" },
-    viewport: { once: true, amount: 0.4 },
+    viewport: { amount: 0.4 },
     transition: { duration: 1.1, ease: EASE_OUT, delay },
   });
 
   const cyanBlock = {
     initial: reduce ? false : { opacity: 0, x: -36 },
     whileInView: { opacity: 1, x: 0 },
-    viewport: { once: true, amount: 0.6 },
+    viewport: { amount: 0.6 },
     transition: { duration: 1.1, ease: EASE_OUT, delay: 0.35 },
   };
 

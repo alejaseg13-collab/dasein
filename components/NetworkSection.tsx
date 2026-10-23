@@ -40,22 +40,37 @@ export default function NetworkSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.15 }}
-          className="mx-[4.5%] mt-[56px] overflow-hidden md:mt-[80px]"
+          className="relative mx-[4.5%] mt-[56px] overflow-hidden md:mt-[80px]"
         >
           <div className="aspect-video w-full">
             <motion.img
               src="/images/fondo-red-poster.webp"
               alt=""
-              initial={{ scale: 1 }}
-              whileInView={{ scale: 1.12 }}
+              initial={{ scale: 1.05, x: "-1.5%" }}
+              whileInView={{ scale: 1.15, x: "1.5%" }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{
-                duration: 10,
+                duration: 6,
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatType: "reverse",
               }}
               className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <motion.div
+              initial={{ x: "-60%" }}
+              whileInView={{ x: "210%" }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{
+                duration: 2.5,
+                ease: "easeInOut",
+                delay: 1.5,
+                repeat: Infinity,
+                repeatDelay: 5,
+              }}
+              className="absolute -top-[20%] left-0 h-[140%] w-[45%] rotate-[-10deg] bg-gradient-to-r from-transparent via-white/15 to-transparent blur-[6px]"
             />
           </div>
         </motion.div>

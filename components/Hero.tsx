@@ -89,7 +89,7 @@ export default function Hero() {
         className="absolute inset-0"
         initial={{ clipPath: CLIP_RECT }}
         animate={{ clipPath: running ? CLIP_FULL : CLIP_RECT }}
-        transition={{ duration: 0.5, ease: EASE_INOUT, delay: 0.48 }}
+        transition={{ duration: 0.75, ease: EASE_INOUT, delay: 0.48 }}
       >
         <motion.div
           className="absolute inset-0"

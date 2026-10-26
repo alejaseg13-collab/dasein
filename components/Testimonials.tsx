@@ -59,7 +59,7 @@ function Card({
     <motion.div
       initial={reduce ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.02 }}
+      viewport={{ amount: 0.02 }}
       transition={{ duration: 0.8, ease: EASE_OUT, delay }}
       whileHover={reduce ? undefined : { y: -4, transition: { duration: 0.25, ease: EASE_OUT } }}
       className="group relative w-[var(--card)]"
@@ -168,7 +168,7 @@ export default function Testimonials() {
   const enter = (delay: number) => ({
     initial: reduce ? false : ({ opacity: 0, y: 24 } as const),
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.3 },
+    viewport: { amount: 0.3 },
     transition: { duration: 0.8, ease: EASE_OUT, delay },
   });
 
@@ -182,7 +182,7 @@ export default function Testimonials() {
           <motion.div
             initial={reduce ? false : { opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
+            viewport={{ amount: 0.5 }}
             transition={{ duration: 0.7, ease: EASE_OUT }}
             className="origin-left"
           >

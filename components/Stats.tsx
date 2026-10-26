@@ -54,7 +54,7 @@ function Stat({ prefijo, valor, etiqueta, delay }: StatData & { delay: number })
       ref={ref}
       initial={reduce ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ amount: 0.3 }}
       transition={{ duration: 0.8, ease: EASE_OUT, delay }}
       className="flex flex-col items-center text-center"
     >
@@ -88,7 +88,7 @@ export default function Stats() {
   const enter = (delay: number) => ({
     initial: reduce ? false : ({ opacity: 0, y: 24 } as const),
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.3 },
+    viewport: { amount: 0.3 },
     transition: { duration: 0.8, ease: EASE_OUT, delay },
   });
 
@@ -99,7 +99,7 @@ export default function Stats() {
           <motion.div
             initial={reduce ? false : { scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.6 }}
+            viewport={{ amount: 0.6 }}
             transition={{ duration: 0.6, ease: EASE_OUT }}
             className="h-px w-[120px] origin-left bg-white"
           />
@@ -121,7 +121,7 @@ export default function Stats() {
                 key={i}
                 initial={reduce ? false : { opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.6 }}
+                viewport={{ amount: 0.6 }}
                 transition={{ duration: 0.4, ease: EASE_OUT, delay: 0.4 + i * 0.1 }}
               >
                 <Star />

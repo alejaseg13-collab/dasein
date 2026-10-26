@@ -151,7 +151,7 @@ export default function Contact() {
       <motion.div
         initial={reduce ? false : { opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
+        viewport={{ amount: 0.15 }}
         transition={{ duration: 0.9, ease: EASE_OUT }}
         className="rounded-[32px] border border-white/80 bg-[linear-gradient(140deg,rgba(89,21,20,0.78)_0%,rgba(62,13,9,0.62)_100%)] p-3 md:rounded-[60px] md:p-5"
       >
@@ -159,7 +159,7 @@ export default function Contact() {
           <motion.div
             initial={reduce ? false : { scale: 1.06 }}
             whileInView={{ scale: 1 }}
-            viewport={{ once: true, amount: 0.15 }}
+            viewport={{ amount: 0.15 }}
             transition={{ duration: 1.4, ease: EASE_OUT }}
             className="relative min-h-[620px] overflow-hidden rounded-[24px] bg-black md:min-h-0 md:rounded-[28px]"
           >

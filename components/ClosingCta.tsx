@@ -62,7 +62,7 @@ export default function ClosingCta() {
   const enter = (delay: number) => ({
     initial: reduce ? false : ({ opacity: 0, y: 24 } as const),
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.3 },
+    viewport: { amount: 0.3 },
     transition: { duration: 0.8, ease: EASE_OUT, delay },
   });
 
@@ -94,7 +94,7 @@ export default function ClosingCta() {
       <motion.div
         initial={reduce ? false : { opacity: 0, scale: 0.94 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ amount: 0.3 }}
         transition={{ duration: 1.2, ease: EASE_OUT, delay: 0.4 }}
         className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
       >

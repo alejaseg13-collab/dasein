@@ -147,7 +147,7 @@ export default function Contact() {
   }, [reduce, pausado]);
 
   return (
-    <section id="contacto" className="relative z-10 px-4 py-[72px] md:px-[2.8%] md:py-[110px]">
+    <section id="contacto" className="relative z-10 px-4 py-[56px] md:px-[2.8%] md:py-[80px]">
       <motion.div
         initial={reduce ? false : { opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}

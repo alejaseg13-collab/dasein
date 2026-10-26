@@ -8,7 +8,7 @@ const EASE_OUT = "easeOut" as const;
 export default function NetworkSection() {
   return (
     <MotionConfig reducedMotion="user">
-      <section className="relative z-10 pt-[64px] pb-[96px] md:pt-[96px] md:pb-[140px]">
+      <section className="relative z-10 pt-[64px] pb-[72px] md:pt-[96px] md:pb-[96px]">
         <div className="px-[4.5%] md:grid md:grid-cols-[46%_1fr]">
           <h2 className="text-[24px] uppercase leading-[1.45] text-white md:pr-8 md:text-[27px]">
             <Reveal as="span" delay={0} className="block font-normal">

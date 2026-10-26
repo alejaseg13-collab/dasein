@@ -126,7 +126,7 @@ export default function Services() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section className="relative z-10 pb-[100px] pt-[56px] md:pb-[140px] md:pt-[72px]">
+      <section className="relative z-10 pb-[72px] pt-[56px] md:pb-[96px] md:pt-[72px]">
         <div className="h-px w-full bg-white/30" />
 
         <div className="mt-[64px] flex flex-col gap-12 px-6 md:mt-[88px] md:flex-row md:gap-12 md:px-12">

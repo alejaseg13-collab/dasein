@@ -95,7 +95,7 @@ export default function Clients() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="relative z-10 -mt-10 px-6 pb-[110px] text-center md:-mt-[110px] md:px-12">
+    <section className="relative z-10 -mt-10 px-6 pb-[72px] text-center md:-mt-[110px] md:px-12">
       <Reveal
         as="h2"
         y={24}

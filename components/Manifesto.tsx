@@ -29,7 +29,7 @@ export default function Manifesto() {
   };
 
   return (
-    <section className="relative z-10 px-6 pb-[120px] pt-[88px] md:px-[11.7%] md:pt-[112px]">
+    <section className="relative z-10 px-6 pb-[80px] pt-[72px] md:px-[11.7%] md:pt-[80px]">
       <p className="text-[13px] font-medium uppercase leading-none tracking-[0.14em] text-white md:text-[19px]">
         Diseño y estrategia de marca
       </p>

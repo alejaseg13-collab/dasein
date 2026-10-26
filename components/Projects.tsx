@@ -102,7 +102,7 @@ export default function Projects() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section className="relative z-10 overflow-hidden pb-[110px] pt-[80px] md:pb-[150px] md:pt-[100px]">
+      <section className="relative z-10 overflow-hidden pb-[80px] pt-[80px] md:pb-[104px] md:pt-[100px]">
         <div className="px-[3.7%] md:grid md:grid-cols-[45%_1fr]">
           <h2 className="text-[13px] uppercase leading-[1.7] text-white md:text-[15px]">
             <Reveal as="span" delay={0} className="block font-semibold">

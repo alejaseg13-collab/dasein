@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import IntroProvider from "@/components/IntroProvider";
@@ -11,46 +12,49 @@ import Projects from "@/components/Projects";
 import Stats from "@/components/Stats";
 import Contact from "@/components/Contact";
 import Testimonials from "@/components/Testimonials";
+import ClosingCta from "@/components/ClosingCta";
 
-const FONDOS = [
-  {
-    src: "/images/fondos/fondo-1-verde.png",
-    width: 2269,
-    height: 1276,
-    ratio: "aspect-[1512/1411]",
-  },
-  {
-    src: "/images/fondos/fondo-2-morado.png",
-    width: 2267,
-    height: 2551,
-    ratio: "aspect-[1512/2715]",
-  },
-  {
-    src: "/images/fondos/fondo-3-rojo.png",
-    width: 2267,
-    height: 6836,
-    ratio: "aspect-[1512/4222]",
-  },
-];
+// Máscara: el borde superior de la imagen se funde con el fondo anterior
+// (90 px de degradado) para que no se vea ninguna línea de costura. Los bordes
+// inferiores de cada imagen quedan "enterrados" a 120 px dentro de la zona ya
+// opaca del fondo siguiente.
+const MASCARA_ARRIBA =
+  "linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,1) 90px)";
+
+/**
+ * Fondo de un grupo de secciones: degradado estirado (object-fill) detrás del
+ * contenido.
+ * - `style`: posiciona/dimensiona la imagen (subir contenido, extender 1 px o
+ *   40 px hacia abajo, máscara de fundido en el borde superior).
+ * - `recorta`: si se pasa, la imagen va dentro de un contenedor con
+ *   overflow-hidden de esa altura (para recortar por arriba sin tapar el hero).
+ */
+function Fondo({ src, style, recorta }: { src: string; style?: CSSProperties; recorta?: boolean }) {
+  const imagen = (
+    <Image
+      src={src}
+      alt=""
+      fill
+      unoptimized
+      sizes="100vw"
+      className="pointer-events-none object-fill"
+      style={style}
+    />
+  );
+
+  if (recorta) {
+    return (
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[calc(100%+120px)] overflow-hidden">
+        {imagen}
+      </div>
+    );
+  }
+  return imagen;
+}
 
 export default function Home() {
   return (
     <div className="grid flex-1 bg-[#08090b]">
-      <div aria-hidden className="col-start-1 row-start-1 flex flex-col">
-        {FONDOS.map((fondo, index) => (
-          <div key={fondo.src} className={`relative w-full ${fondo.ratio}`}>
-            <Image
-              src={fondo.src}
-              alt=""
-              width={fondo.width}
-              height={fondo.height}
-              unoptimized
-              preload={index === 0}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </div>
-        ))}
-      </div>
       <main className="relative z-10 col-start-1 row-start-1 w-full self-start">
         <div className="relative">
           <IntroProvider>
@@ -58,15 +62,62 @@ export default function Home() {
             <Header />
           </IntroProvider>
         </div>
-        <Clients />
-        <Divider />
-        <Manifesto />
-        <Services />
-        <NetworkSection />
-        <Projects />
-        <Stats />
-        <Contact />
-        <Testimonials />
+        {/* flow-root: Clients lleva -mt-[110px]; sin BFC ese margen colapsaría
+            con el envoltorio y el fondo verde subiría sobre el hero. */}
+        <div className="relative flow-root">
+          {/* subido 45% (arranca en zona oscura) y extendido 40px hacia abajo
+              para que el morado se funda sobre él. */}
+          <Fondo
+            src="/images/fondos/fondo-1-verde.png"
+            recorta
+            style={{ top: "-45%", height: "145%" }}
+          />
+          {/* El hero termina en #08090b: fundido (estilo inline para que aplique
+              siempre) para que no se vea corte entre el hero y el primer fondo. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-[260px]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to bottom, #08090b 0%, rgba(8,9,11,0.55) 55%, rgba(8,9,11,0) 100%)",
+            }}
+          />
+          <Clients />
+          <Divider />
+          <Manifesto />
+        </div>
+        <div className="relative flow-root">
+          {/* borde superior fundido con el verde + extendido 40px hacia abajo
+              para que el rojo se funda sobre él */}
+          <Fondo
+            src="/images/fondos/fondo-2-morado.png"
+            style={{
+              top: -1,
+              height: "calc(100% + 121px)",
+              maskImage: MASCARA_ARRIBA,
+              WebkitMaskImage: MASCARA_ARRIBA,
+            }}
+          />
+          <Services />
+          <NetworkSection />
+          <Projects />
+        </div>
+        <div className="relative flow-root">
+          {/* borde superior fundido con el morado */}
+          <Fondo
+            src="/images/fondos/fondo-3-rojo.png"
+            style={{
+              top: -121,
+              height: "calc(100% + 121px)",
+              maskImage: MASCARA_ARRIBA,
+              WebkitMaskImage: MASCARA_ARRIBA,
+            }}
+          />
+          <Stats />
+          <Contact />
+          <Testimonials />
+          <ClosingCta />
+        </div>
       </main>
     </div>
   );

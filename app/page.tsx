@@ -13,6 +13,7 @@ import Stats from "@/components/Stats";
 import Contact from "@/components/Contact";
 import Testimonials from "@/components/Testimonials";
 import ClosingCta from "@/components/ClosingCta";
+import Footer from "@/components/Footer";
 
 // Máscara: el borde superior de la imagen se funde con el fondo anterior
 // (90 px de degradado) para que no se vea ninguna línea de costura. Los bordes
@@ -118,6 +119,7 @@ export default function Home() {
           <Testimonials />
           <ClosingCta />
         </div>
+        <Footer />
       </main>
     </div>
   );

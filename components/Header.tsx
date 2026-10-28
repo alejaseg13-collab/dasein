@@ -18,7 +18,7 @@ export default function Header() {
     >
       <div className="flex items-center justify-between gap-6">
         <Image
-          src="/logo/Logo Dasein horizontal studio.svg"
+          src="/logo/logo-dasein-horizontal-studio.svg"
           alt="Dasein Studio"
           width={132}
           height={33}

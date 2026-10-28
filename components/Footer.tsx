@@ -6,7 +6,7 @@ import { EMAIL, FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL, PHONE, WHATSAPP_URL }
 
 const EASE_OUT = "easeOut" as const;
 
-const LOGO_SRC = "/logo/Logo%20Dasein%20horizontal%20studio.svg";
+const LOGO_SRC = "/logo/logo-dasein-horizontal-studio.svg";
 
 function WhatsAppIcon() {
   return (

@@ -5,8 +5,8 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, MeshTransmissionMaterial, RoundedBox, Text } from "@react-three/drei";
 
-const FONT_XB = "/fonts/Sharp%20Sans/Sharp%20Sans%20Extrabold.otf";
-const FONT_LT = "/fonts/Sharp%20Sans/Sharp%20Sans%20Light.otf";
+const FONT_XB = "/fonts/sharp-sans/sharp-sans-extrabold.otf";
+const FONT_LT = "/fonts/sharp-sans/sharp-sans-light.otf";
 const FAM_XB = "SharpSansXB";
 const FAM_LT = "SharpSansLT";
 

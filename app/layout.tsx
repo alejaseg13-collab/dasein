@@ -4,17 +4,17 @@ import "./globals.css";
 
 const sharpSans = localFont({
   src: [
-    { path: "../public/fonts/Sharp Sans/Sharp Sans Light.otf", weight: "300", style: "normal" },
-    { path: "../public/fonts/Sharp Sans/Sharp Sans.otf", weight: "400", style: "normal" },
-    { path: "../public/fonts/Sharp Sans/Sharp Sans Medium.otf", weight: "500", style: "normal" },
-    { path: "../public/fonts/Sharp Sans/Sharp Sans Semibold.otf", weight: "600", style: "normal" },
+    { path: "../public/fonts/sharp-sans/sharp-sans-light.otf", weight: "300", style: "normal" },
+    { path: "../public/fonts/sharp-sans/sharp-sans.otf", weight: "400", style: "normal" },
+    { path: "../public/fonts/sharp-sans/sharp-sans-medium.otf", weight: "500", style: "normal" },
+    { path: "../public/fonts/sharp-sans/sharp-sans-semibold.otf", weight: "600", style: "normal" },
   ],
   variable: "--font-sharp-sans",
   display: "swap",
 });
 
 const swarshDaisy = localFont({
-  src: [{ path: "../public/fonts/Swarsh Daisy/Swarsh Daisy-Italic.ttf", weight: "400", style: "italic" }],
+  src: [{ path: "../public/fonts/swarsh-daisy/swarsh-daisy-italic.ttf", weight: "400", style: "italic" }],
   variable: "--font-swarsh-daisy",
   display: "swap",
 });

@@ -30,12 +30,12 @@ Si una captura larga no deja ver bien los detalles, pedir una exportación por s
 - Los colores se usan para textos, botones, bordes y detalles. Los fondos son imágenes (ver "Recursos").
 
 ## Tipografía (archivos en /public/fonts; ya cargadas en app/layout.tsx)
-Carpetas: `Clash Display` (ClashDisplay-Variable.ttf), `Sharp Sans` (pesos Thin a ExtraBold, con sus cursivas, en .otf) y `Swarsh Daisy` (Regular e Italic, en .ttf).
+Carpetas: `clash-display` (clashdisplay-variable.ttf), `sharp-sans` (pesos Thin a ExtraBold, con sus cursivas, en .otf) y `swarsh-daisy` (Regular e Italic, en .ttf).
 Uso propuesto (confirmar comparando con la referencia en /design):
 - Texto, menús, botones y formularios: Sharp Sans (Light, Regular, Medium).
 - Palabras en cursiva serif de los títulos (ej. *Se diseña.*, *clientes*, *servicios*, *tu proyecto*): Swarsh Daisy Italic.
 - Titulares grandes en mayúsculas ("SOMOS UNA AGENCIA DIGITAL GANADORA", "DEMOS FORMA Y DIRECCIÓN A TUS PROYECTOS") y cifras (+35, +4): probar Clash Display con peso alto; si no coincide con la referencia, usar Sharp Sans ExtraBold.
-- Cargar solo los pesos que se usen. Los nombres de archivo tienen espacios: cuidar las rutas.
+- Cargar solo los pesos que se usen. Rutas en minúsculas y con guiones (sin espacios; en Linux/Netlify mayúsculas y espacios importan).
 - Si una fuente no coincide con el diseño, no inventar: avisar y dejar un comentario `TODO: fuente`.
 - Licencias: confirmar con el diseñador que cubren uso web.
 
@@ -56,10 +56,10 @@ Son degradados oscuros: usarlas como PNG (en WebP salen bandas). Color de respal
 - `servicio-identidad.webp`, `servicio-estrategia.webp`, `servicio-web.webp`: imágenes de las 3 tarjetas de servicios. Son PROVISIONALES: dicen "STNDOUT" y traen elementos de interfaz de redes sociales. No publicar hasta confirmar con el diseñador.
 - `proyecto-vora.webp`, `proyecto-scalla.webp`: proyectos del carrusel.
 
-### Logos: /logo (SVG; los nombres tienen espacios)
-- `Logo Dasein horizontal studio.svg`: header y footer (confirmar contra la referencia).
-- `Logo Dasein horizontal.svg`, `Logo Dasein vertical studio.svg`, `Logo Dasein vertical.svg`: alternativos.
-- Los SVG se muestran con `<img>` o con `next/image` y `unoptimized`. Cuidar los espacios del nombre en la ruta.
+### Logos: /logo (SVG; nombres en minúsculas con guiones)
+- `logo-dasein-horizontal-studio.svg`: header y footer (confirmar contra la referencia).
+- `logo-dasein-horizontal.svg`, `logo-dasein-vertical-studio.svg`, `logo-dasein-vertical.svg`: alternativos.
+- Los SVG se muestran con `<img>` o con `next/image` y `unoptimized`. Rutas en minúsculas y con guiones (sin espacios).
 
 ### Videos: /videos (PLAN B, no usar en la primera versión)
 - `hero-astronauta.mp4` y `fondo-red.mp4`: animaciones hechas con IA. La animación se hace por código; los videos solo se usan si el resultado por código no convence.

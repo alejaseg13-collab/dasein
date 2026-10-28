@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 const EASE_OUT = "easeOut" as const;
 
 const clashDisplay = localFont({
-  src: "../public/fonts/Clash Display/ClashDisplay-Variable.ttf",
+  src: "../public/fonts/clash-display/clashdisplay-variable.ttf",
   weight: "200 700",
   display: "swap",
 });

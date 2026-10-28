@@ -222,7 +222,7 @@ export default function Contact() {
 
             <div className="relative z-10 flex h-full flex-col p-6 md:p-11">
               <Image
-                src="/logo/Logo%20Dasein%20horizontal.svg"
+                src="/logo/logo-dasein-horizontal.svg"
                 alt="Dasein Studio"
                 width={130}
                 height={32}

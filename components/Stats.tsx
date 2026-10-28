@@ -12,13 +12,13 @@ import {
 import { useEffect, useRef } from "react";
 
 const clashDisplay = localFont({
-  src: "../public/fonts/Clash Display/ClashDisplay-Variable.ttf",
+  src: "../public/fonts/clash-display/clashdisplay-variable.ttf",
   weight: "200 700",
   display: "swap",
 });
 
 const sharpSansBold = localFont({
-  src: "../public/fonts/Sharp Sans/Sharp Sans Bold.otf",
+  src: "../public/fonts/sharp-sans/sharp-sans-bold.otf",
   weight: "700",
   display: "swap",
 });

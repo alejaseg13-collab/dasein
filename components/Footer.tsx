@@ -10,13 +10,14 @@ const LOGO_SRC = "/logo/Logo%20Dasein%20horizontal%20studio.svg";
 
 function WhatsAppIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="10.4" stroke="currentColor" strokeWidth="1.5" />
-      <path
-        d="M9.1 7.8c-.35.12-.67.4-.85.76l-.55 1c-.27.5-.16 1.13.22 1.63a12.4 12.4 0 0 0 2.55 2.6c.95.62 1.86 1 2.5 1.18.48.12.99-.02 1.34-.36l.83-.95-1.55-1.1-.72.37c-.82-.37-1.56-.9-2.13-1.55-.55-.62-.93-1.32-1.13-2.02l.45-.66-1.1-1.05z"
-        fill="currentColor"
-      />
-    </svg>
+    <Image
+      src="/images/wtp.svg"
+      alt=""
+      width={24}
+      height={24}
+      unoptimized
+      className="h-[18px] w-[18px]"
+    />
   );
 }
 
@@ -176,12 +177,11 @@ export default function Footer() {
             <br />
             All rights reserved.
           </p>
-          {/* TODO: la página de Términos y condiciones no existe todavía. */}
           <a
-            href="#"
+            href="/politica-de-privacidad"
             className="max-w-[88px] text-[15px] font-light leading-[1.5] text-white transition-colors duration-300 hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none"
           >
-            Términos y condiciones
+            Política de privacidad
           </a>
         </motion.div>
       </div>

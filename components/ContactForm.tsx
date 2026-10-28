@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { serviceList } from "@/data/services";
 import { enviarSolicitud, type SolicitudDatos } from "@/lib/enviar-solicitud";
@@ -20,12 +20,46 @@ const INICIAL: SolicitudDatos = {
   privacidad: false,
 };
 
+// Los datos se conservan en sessionStorage para no perderlos al navegar a la
+// política de privacidad y volver (se borran al enviar el formulario).
+const CLAVE = "dasein-contacto-solicitud";
+
 export default function ContactForm() {
   const reduce = useReducedMotion();
   const [valores, setValores] = useState<SolicitudDatos>(INICIAL);
   const [errores, setErrores] = useState<Errores>({});
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
+  const primeraGuarda = useRef(true);
+
+  useEffect(() => {
+    let cancelado = false;
+    const id = window.setTimeout(() => {
+      if (cancelado) return;
+      try {
+        const raw = window.sessionStorage.getItem(CLAVE);
+        if (raw) setValores({ ...INICIAL, ...JSON.parse(raw) });
+      } catch {
+        /* sessionStorage no disponible */
+      }
+    }, 0);
+    return () => {
+      cancelado = true;
+      window.clearTimeout(id);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (primeraGuarda.current) {
+      primeraGuarda.current = false;
+      return;
+    }
+    try {
+      window.sessionStorage.setItem(CLAVE, JSON.stringify(valores));
+    } catch {
+      /* sessionStorage no disponible */
+    }
+  }, [valores]);
 
   const enter = (delay: number) => ({
     initial: reduce ? false : ({ opacity: 0, y: 24 } as const),
@@ -60,6 +94,11 @@ export default function ContactForm() {
     }
     setEnviando(true);
     await enviarSolicitud(valores);
+    try {
+      window.sessionStorage.removeItem(CLAVE);
+    } catch {
+      /* sessionStorage no disponible */
+    }
     setEnviando(false);
     setEnviado(true);
   };
@@ -203,7 +242,17 @@ export default function ContactForm() {
                   </svg>
                 )}
               </span>
-              <span>Acepto la política de privacidad de Dasein Studio.</span>
+              <span>
+                Acepto la{" "}
+                <a
+                  href="/politica-de-privacidad"
+                  onClick={(e) => e.stopPropagation()}
+                  className="underline underline-offset-2 transition-colors duration-300 hover:text-[#ee0f10] focus-visible:text-[#ee0f10] focus-visible:outline-none"
+                >
+                  política de privacidad
+                </a>{" "}
+                de Dasein Studio.
+              </span>
             </label>
             {error("privacidad")}
           </motion.div>

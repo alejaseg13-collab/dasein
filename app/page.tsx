@@ -31,16 +31,19 @@ const MASCARA_ARRIBA =
  *   overflow-hidden de esa altura (para recortar por arriba sin tapar el hero).
  */
 function Fondo({ src, style, recorta }: { src: string; style?: CSSProperties; recorta?: boolean }) {
+  // `style` va en un contenedor propio: `next/image` con `fill` no admite
+  // `style.height` (lanza error en dev) aunque en prod lo sobrescribía.
   const imagen = (
-    <Image
-      src={src}
-      alt=""
-      fill
-      unoptimized
-      sizes="100vw"
-      className="pointer-events-none object-fill"
-      style={style}
-    />
+    <div className="pointer-events-none absolute inset-0" style={style}>
+      <Image
+        src={src}
+        alt=""
+        fill
+        unoptimized
+        sizes="100vw"
+        className="pointer-events-none object-fill"
+      />
+    </div>
   );
 
   if (recorta) {

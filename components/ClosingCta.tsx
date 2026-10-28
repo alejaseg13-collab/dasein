@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import localFont from "next/font/local";
+import Image from "next/image";
 import Prism from "@/components/Prism";
 
 // TODO: confirmar el número de WhatsApp con el equipo.
@@ -18,13 +19,14 @@ const clashDisplay = localFont({
 
 function WhatsAppIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] shrink-0" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="10.6" stroke="currentColor" strokeWidth="1.4" />
-      <path
-        d="M9.1 7.8c-.35.12-.67.4-.85.76l-.55 1c-.27.5-.16 1.13.22 1.63a12.4 12.4 0 0 0 2.55 2.6c.95.62 1.86 1 2.5 1.18.48.12.99-.02 1.34-.36l.83-.95-1.55-1.1-.72.37c-.82-.37-1.56-.9-2.13-1.55-.55-.62-.93-1.32-1.13-2.02l.45-.66-1.1-1.05z"
-        fill="currentColor"
-      />
-    </svg>
+    <Image
+      src="/images/wtp.svg"
+      alt=""
+      width={24}
+      height={24}
+      unoptimized
+      className="h-[18px] w-[18px] shrink-0"
+    />
   );
 }
 

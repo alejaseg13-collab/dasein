@@ -6,13 +6,39 @@ export interface SolicitudDatos {
   privacidad: boolean;
 }
 
+const TIMEOUT_MS = 15000;
+
 /**
- * TODO: conectar con el servicio real de envío de correos
- * (PENDIENTE definir cuál, ver DESIGN.md — "Reglas técnicas").
- * Por ahora simula la espera de red (~1 s) y devuelve éxito.
+ * Envía la solicitud a la ruta API /api/contacto (SMTP con nodemailer).
+ * Se corta a los 15 s con AbortController y devuelve ok:false en cualquier
+ * fallo (red, timeout o respuesta no exitosa); el formulario conserva lo
+ * que se escribió para poder reintentar.
  */
-export async function enviarSolicitud(datos: SolicitudDatos): Promise<{ ok: boolean }> {
-  void datos;
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return { ok: true };
+export async function enviarSolicitud(
+  datos: SolicitudDatos,
+  contactoAlt = "",
+): Promise<{ ok: boolean }> {
+  const controlador = new AbortController();
+  const reloj = setTimeout(() => controlador.abort(), TIMEOUT_MS);
+  try {
+    const respuesta = await fetch("/api/contacto", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nombre: datos.nombre,
+        email: datos.correo,
+        servicio: datos.servicio,
+        mensaje: datos.proyecto,
+        consentimiento: datos.privacidad,
+        contacto_alt: contactoAlt,
+      }),
+      signal: controlador.signal,
+    });
+    const datosRespuesta = (await respuesta.json().catch(() => null)) as { ok?: boolean } | null;
+    return { ok: respuesta.ok && datosRespuesta?.ok === true };
+  } catch {
+    return { ok: false };
+  } finally {
+    clearTimeout(reloj);
+  }
 }

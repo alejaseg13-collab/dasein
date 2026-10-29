@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { serviceList } from "@/data/services";
+import { WHATSAPP_NUMBER } from "@/lib/contact";
 import { enviarSolicitud, type SolicitudDatos } from "@/lib/enviar-solicitud";
 
 const EASE_OUT = "easeOut" as const;
@@ -30,6 +31,8 @@ export default function ContactForm() {
   const [errores, setErrores] = useState<Errores>({});
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
+  const [errorEnvio, setErrorEnvio] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
   const primeraGuarda = useRef(true);
 
   useEffect(() => {
@@ -93,13 +96,19 @@ export default function ContactForm() {
       return;
     }
     setEnviando(true);
-    await enviarSolicitud(valores);
+    setErrorEnvio(false);
+    const resultado = await enviarSolicitud(valores, honeypot);
+    setEnviando(false);
+    if (!resultado.ok) {
+      setErrorEnvio(true);
+      return;
+    }
     try {
       window.sessionStorage.removeItem(CLAVE);
     } catch {
       /* sessionStorage no disponible */
     }
-    setEnviando(false);
+    setHoneypot("");
     setEnviado(true);
   };
 
@@ -136,6 +145,16 @@ export default function ContactForm() {
         </motion.p>
       ) : (
         <form noValidate onSubmit={onSubmit} className="space-y-5">
+          <input
+            type="text"
+            name="contacto_alt"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="sr-only"
+          />
           <motion.div {...enter(0.15)}>
             {etiqueta("contacto-nombre", "Tu nombre")}
             <input
@@ -267,6 +286,20 @@ export default function ContactForm() {
             >
               {enviando ? "Enviando…" : "Solicitar propuesta"}
             </motion.button>
+            {errorEnvio && (
+              <p role="alert" className="mt-4 text-center text-[13px] leading-[1.5] text-[#ff8f8f]">
+                No pudimos enviar tu solicitud. Inténtalo de nuevo o{" "}
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 transition-colors duration-300 hover:text-white focus-visible:text-white focus-visible:outline-none"
+                >
+                  escríbenos por WhatsApp
+                </a>
+                .
+              </p>
+            )}
             <p className="mt-4 text-[11px] leading-[1.5] text-white/60">
               *Dependiendo de la cantidad de solicitudes te responderemos lo antes posible. Tus
               datos son exclusivamente usados para contactarte.

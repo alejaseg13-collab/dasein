@@ -35,7 +35,7 @@ export default function Manifesto() {
       </p>
 
       <h2
-        className={`mt-[14px] text-[clamp(32px,7.5vw,112px)] font-bold uppercase leading-[1.35] tracking-[-0.01em] text-white md:leading-[1.12] ${clashDisplay.className}`}
+        className={`mt-[14px] text-[clamp(32px,7.5vw,170px)] font-semibold uppercase leading-[1.35] tracking-[-0.01em] text-white md:leading-[1.12] ${clashDisplay.className}`}
       >
         <span className="flex flex-wrap items-center justify-between gap-x-8 gap-y-9 md:gap-y-7">
           <motion.span {...word(0)} className="whitespace-nowrap">
@@ -75,17 +75,20 @@ export default function Manifesto() {
           </span>
         </span>
 
-        <motion.span {...word(0.12)} className="mt-3 block whitespace-nowrap md:mt-0">
+        <motion.span
+          {...word(0.12)}
+          className="mt-3 block whitespace-nowrap md:mt-0 md:tracking-[0.07em]"
+        >
           Agencia digital
         </motion.span>
 
-        <span className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-5 md:mt-0">
+        <span className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-5 md:mt-0">
           <motion.span
             {...cyanBlock}
             className="flex shrink-0 items-center gap-[8px] md:gap-[0.08em]"
           >
             <span className="flex h-[76px] w-[200px] shrink-0 items-center bg-[#0bcadf] px-[14px] md:h-[0.8em] md:w-[2.5em] md:px-[0.17em]">
-              <span className="font-sans text-[14px] font-semibold leading-[1.5] tracking-[0.01em] text-[#03081e] normal-case md:text-[max(13px,0.16em)] md:leading-[1.55]">
+              <span className="font-sans text-[14px] font-semibold leading-[1.5] tracking-[0.01em] text-[#03081e] md:text-[max(13px,0.16em)] md:leading-[1.55]">
                 Un estudio creativo
                 <br />
                 desde Colombia
@@ -103,6 +106,9 @@ export default function Manifesto() {
           </motion.span>
         </span>
       </h2>
+
+      {/* Cierra el bloque: misma línea que el separador de arriba. */}
+      <div aria-hidden="true" className="mt-[64px] h-px w-full bg-white/45" />
     </section>
   );
 }

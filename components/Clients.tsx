@@ -1,77 +1,27 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 
 const EASE_OUT = "easeOut" as const;
 
 /**
- * TODO: sustituir estos textos de relleno por los SVG reales de los clientes
- * (blanco) cuando estén en /public/logo (ver DESIGN.md — "Faltan").
- * Cada marca lleva su propio tratamiento tipográfico solo como marcador.
+ * Logos reales de los clientes (SVG en /public/images, con su color propio).
+ * Todos se pintan a la misma altura de cinta; el ancho lo define cada SVG.
  */
-const LOGOS: { id: string; node: React.ReactNode }[] = [
-  {
-    id: "burberry",
-    node: (
-      <span className="text-[21px] font-semibold uppercase tracking-[0.02em] md:text-[26px]">
-        Burberry
-      </span>
-    ),
-  },
-  {
-    id: "adidas",
-    node: (
-      <span className="text-[24px] font-semibold lowercase tracking-[-0.03em] md:text-[30px]">
-        adidas
-      </span>
-    ),
-  },
-  {
-    id: "ensigna",
-    node: (
-      <span className="text-[15px] font-medium uppercase tracking-[0.3em] md:text-[18px]">
-        Ensigna
-      </span>
-    ),
-  },
-  {
-    id: "stationery",
-    node: (
-      <span className="flex flex-col items-center leading-none">
-        <span className="text-[7px] uppercase tracking-[0.3em] md:text-[8px]">
-          Extra Delicious
-        </span>
-        <span className="mt-[5px] text-[16px] font-medium uppercase tracking-[0.28em] md:text-[19px]">
-          Stationery
-        </span>
-      </span>
-    ),
-  },
-  {
-    id: "mexicana",
-    node: (
-      <span className="text-[21px] font-semibold italic uppercase tracking-[0.01em] md:text-[26px]">
-        Mexicana
-      </span>
-    ),
-  },
-  {
-    id: "gpsnvision",
-    node: (
-      <span className="text-[21px] font-semibold lowercase tracking-[-0.03em] md:text-[26px]">
-        gpsnvision
-      </span>
-    ),
-  },
-  {
-    id: "logistics",
-    node: (
-      <span className="text-[19px] font-medium italic uppercase tracking-[0.04em] md:text-[23px]">
-        Logistics
-      </span>
-    ),
-  },
+const LOGOS: { id: string; src: string; alt: string; width: number; height: number }[] = [
+  { id: "astralem", src: "/images/Astralem.svg", alt: "Astralem", width: 156, height: 32 },
+  { id: "atria", src: "/images/Atria.svg", alt: "Atria", width: 206, height: 40 },
+  { id: "boko", src: "/images/Boko.svg", alt: "Boko", width: 157, height: 44 },
+  { id: "casa-facil", src: "/images/Casa-Facil.svg", alt: "Casa-Facil", width: 75, height: 62 },
+  { id: "ejepets", src: "/images/Ejepets.svg", alt: "Ejepets", width: 123, height: 42 },
+  { id: "fcs", src: "/images/FCS.svg", alt: "FCS", width: 79, height: 75 },
+  { id: "jabo", src: "/images/Jabo.svg", alt: "Jabo", width: 154, height: 39 },
+  { id: "lolarepa", src: "/images/Lolarepa.svg", alt: "Lolarepa", width: 59, height: 62 },
+  { id: "manuel-foto", src: "/images/Manuel%20Foto.svg", alt: "Manuel Foto", width: 151, height: 57 },
+  { id: "senda", src: "/images/Senda.svg", alt: "Senda", width: 145, height: 42 },
+  { id: "vora", src: "/images/Vora.svg", alt: "Vora", width: 113, height: 28 },
 ];
 
 const MARQUEE_CSS = `
@@ -95,7 +45,7 @@ export default function Clients() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="relative z-10 -mt-10 px-6 pb-[72px] text-center md:-mt-[110px] md:px-12">
+    <section className="relative z-10 -mt-10 px-6 pb-[72px] text-center md:-mt-[110px] md:px-[5.5%]">
       <Reveal
         as="h2"
         y={24}
@@ -123,7 +73,7 @@ export default function Clients() {
         whileInView={{ opacity: 1 }}
         viewport={{ amount: 0.4 }}
         transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.3 }}
-        className="dasein-marquee-host relative mx-[-24px] mt-[64px] h-[56px] overflow-hidden md:mx-[-48px] md:mt-[72px] md:h-[70px]"
+        className="dasein-marquee-host relative mx-[-24px] mt-[64px] h-[56px] overflow-hidden md:mx-[-5.5%] md:mt-[72px] md:h-[70px]"
       >
         <style>{MARQUEE_CSS}</style>
         <div className="dasein-marquee absolute inset-y-0 left-0 flex w-max items-center">
@@ -135,7 +85,14 @@ export default function Clients() {
             >
               {LOGOS.map((logo) => (
                 <li key={logo.id} className="flex shrink-0 items-center">
-                  {logo.node}
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={logo.width}
+                    height={logo.height}
+                    unoptimized
+                    className="h-[34px] w-auto md:h-[42px]"
+                  />
                 </li>
               ))}
             </ul>

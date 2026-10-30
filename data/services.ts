@@ -13,6 +13,36 @@ export const serviceList: string[] = [
 ];
 
 /**
+ * Lista de la sección "Nuestros servicios": nombre + detalle que se expande
+ * en el acordeón. (serviceList de arriba es para el select del formulario.)
+ */
+export const serviceCatalog: { nombre: string; detalle: string[] }[] = [
+  {
+    nombre: "Identidad visual",
+    detalle: ["Estrategia de marca", "Arquitectura de marca", "Diseño de marca"],
+  },
+  {
+    nombre: "Desarrollo Web / Software",
+    detalle: [
+      "Diseño web",
+      "UI/UX",
+      "Programación web",
+      "Software a medida",
+      "Automatizaciones",
+    ],
+  },
+  {
+    nombre: "Comunicación digital",
+    detalle: [
+      "Pauta y campañas digitales",
+      "Estrategia de contenidos",
+      "Diseño de contenidos",
+      "Gestión de redes sociales",
+    ],
+  },
+];
+
+/**
  * Tarjetas del carrusel. Para cambiar una imagen basta con reemplazar el
  * archivo en /public/images con el mismo nombre, o editar la línea `image`.
  * El carrusel funciona con cualquier número de tarjetas (3 o más).
@@ -21,19 +51,25 @@ export const serviceCards: ServiceCard[] = [
   {
     title: "Identidades poderosas",
     subtitle: "Lleva tus ideas a una identidad única",
-    image: "/images/servicio-identidad.webp",
-    alt: "Silla suspendida sobre una niebla morada, representando una identidad visual",
+    image: "/images/Identidades%20poderosas.png",
+    alt: "Gota de cristal suspendida de una rama con una luz en su interior, sobre fondo morado",
+  },
+  {
+    title: "Presencia digital",
+    subtitle: "",
+    image: "/images/Presencia%20digital.png",
+    alt: "Plumínero negro dejando caer una gota de tinta sobre una piedra oscura",
   },
   {
     title: "Estrategias de marca",
     subtitle: "Pauta y parrillas de contenido",
-    image: "/images/servicio-estrategia.webp",
-    alt: "Cubo metálico flotando entre esferas brillantes, representando estrategia de marca",
+    image: "/images/Estrategias%20de%20marca.png",
+    alt: "Carretera nocturna iluminada por rayos de luz que se pierden hacia el horizonte",
   },
   {
-    title: "Sitios web y automatizaciones",
+    title: "Sitios web",
     subtitle: "Desarrollamos tus ideas digitales",
-    image: "/images/servicio-web.webp",
-    alt: "Forma abstracta brillante sobre fondo morado, representando sitios web y automatizaciones",
+    image: "/images/Sitios%20web.png",
+    alt: "Dos cables eléctricos conectados con un destello de luz entre sus puntas",
   },
 ];

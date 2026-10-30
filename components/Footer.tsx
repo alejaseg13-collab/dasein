@@ -87,7 +87,7 @@ export default function Footer() {
   });
 
   return (
-    <footer className="relative z-10 min-h-[380px] bg-black px-[2.7%] pb-[48px] pt-[56px] lg:grid lg:grid-cols-[78.5%_21.5%] lg:pt-[72px]">
+    <footer className="relative z-10 min-h-[380px] bg-black px-[5.5%] pb-[48px] pt-[56px] lg:grid lg:grid-cols-[78.5%_21.5%] lg:pt-[72px]">
       <div className="flex flex-col">
         <motion.div {...enter(0)}>
           <Image

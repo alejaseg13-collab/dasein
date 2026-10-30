@@ -1,20 +1,49 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useIntro } from "@/components/IntroProvider";
+
+function horaColombia(): string {
+  return new Intl.DateTimeFormat("es-CO", {
+    timeZone: "America/Bogota",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date());
+}
 
 export default function Header() {
   const reduce = useReducedMotion();
   const { running } = useIntro();
+  // La hora se calcula solo en el cliente (new Date() no puede usarse en el
+  // prerender): "--:--" como marcador estable hasta el primer tick.
+  const [hora, setHora] = useState("");
+
+  useEffect(() => {
+    let cancelado = false;
+    // El primer tick corrige la hora del prerender (visita en vivo).
+    const arranque = window.setTimeout(() => {
+      if (!cancelado) setHora(horaColombia());
+    }, 0);
+    const id = window.setInterval(() => {
+      if (!cancelado) setHora(horaColombia());
+    }, 60000);
+    return () => {
+      cancelado = true;
+      window.clearTimeout(arranque);
+      window.clearInterval(id);
+    };
+  }, []);
 
   return (
     <motion.header
       data-intro
       initial={{ opacity: 0, y: -10 }}
       animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-      transition={{ duration: 0.3, ease: "easeOut", delay: 0.45 }}
-      className="absolute inset-x-0 top-0 z-40 px-5 pt-7 sm:px-6 md:px-12 md:pt-[38px]"
+      transition={{ duration: 0.4, ease: "easeOut", delay: 0.8 }}
+      className="absolute inset-x-0 top-0 z-40 px-5 pt-7 sm:px-6 md:px-[5.5%] md:pt-[38px]"
     >
       <div className="flex items-center justify-between gap-6">
         <Image
@@ -37,7 +66,9 @@ export default function Header() {
 
         <div className="hidden md:block">
           <p className="text-[13px] font-semibold leading-snug text-white">Horario</p>
-          <p className="text-[13px] leading-snug text-[#e8ecec]/90">18:50 UGT-5</p>
+          <p className="text-[13px] leading-snug text-[#e8ecec]/90">
+            {hora || "--:--"} UTC-5
+          </p>
         </div>
 
         <motion.a
@@ -47,7 +78,7 @@ export default function Header() {
           animate={running ? { opacity: 1 } : { opacity: 0 }}
           whileHover={reduce ? undefined : { y: -4 }}
           transition={{
-            opacity: { duration: 0.15, ease: "easeOut", delay: 0.68 },
+            opacity: { duration: 0.25, ease: "easeOut", delay: 1.1 },
             y: { type: "spring", stiffness: 300, damping: 20 },
           }}
           className="inline-flex shrink-0 items-center gap-2.5 rounded-[10px] bg-white px-4 py-2.5 text-[13px] font-medium text-[#00272c] transition-colors hover:bg-white/90 sm:px-[18px] sm:py-3 sm:text-[13.5px]"

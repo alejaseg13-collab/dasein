@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MotionConfig, useReducedMotion } from "framer-motion";
-import { serviceCards, serviceList } from "@/data/services";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "framer-motion";
+import { serviceCatalog, serviceCards } from "@/data/services";
 import Reveal from "@/components/Reveal";
 
 const GAP_MOBILE = 16;
@@ -19,6 +19,7 @@ export default function Services() {
   const rafRef = useRef(0);
   const animatingRef = useRef(false);
   const [cardW, setCardW] = useState(0);
+  const [abierto, setAbierto] = useState<number | null>(null);
 
   const measure = useCallback(() => {
     const el = viewportRef.current;
@@ -129,7 +130,7 @@ export default function Services() {
       <section className="relative z-10 pb-[72px] pt-[56px] md:pb-[96px] md:pt-[72px]">
         <div className="h-px w-full bg-white/30" />
 
-        <div className="mt-[64px] flex flex-col gap-12 px-6 md:mt-[88px] md:flex-row md:gap-12 md:px-12">
+        <div className="mt-[64px] flex flex-col gap-12 px-6 md:mt-[88px] md:flex-row md:gap-12 md:px-[5.5%]">
           <div className="md:w-1/4">
             <Reveal as="h2" delay={0} className="text-[36px] font-light leading-[1.04] text-white md:text-[64px]">
               Nuestros
@@ -138,17 +139,23 @@ export default function Services() {
             </Reveal>
 
             <ul className="mt-10 md:mt-14">
-              {serviceList.map((item, i) => (
+              {serviceCatalog.map((item, i) => (
                 <Reveal
-                  key={item}
+                  key={item.nombre}
                   as="li"
                   delay={0.08 * (i + 1)}
                   className="group border-b border-white/30 transition-colors duration-300 hover:border-white/60"
                 >
-                  <div className="flex items-center gap-3 py-[13px] md:py-[15px]">
+                  <button
+                    type="button"
+                    onClick={() => setAbierto((actual) => (actual === i ? null : i))}
+                    aria-expanded={abierto === i}
+                    aria-controls={`servicio-detalle-${i}`}
+                    className="flex w-full items-center gap-3 py-[13px] text-left md:py-[15px]"
+                  >
                     <span className="h-[10px] w-[10px] shrink-0 rounded-full bg-[#930ee6] transition-shadow duration-300 group-hover:shadow-[0_0_12px_2px_rgba(147,14,230,0.75)]" />
                     <span className="flex-1 text-[15px] font-light leading-tight text-white md:text-[17px]">
-                      {item}
+                      {item.nombre}
                     </span>
                     <svg
                       width="14"
@@ -156,7 +163,9 @@ export default function Services() {
                       viewBox="0 0 14 14"
                       fill="none"
                       aria-hidden="true"
-                      className="shrink-0 text-white/70 transition-transform duration-300 ease-out group-hover:translate-x-1"
+                      className={`shrink-0 text-white/70 transition-transform duration-300 ease-out ${
+                        abierto === i ? "rotate-90" : ""
+                      }`}
                     >
                       <path
                         d="M5 3l4 4-4 4"
@@ -166,7 +175,23 @@ export default function Services() {
                         strokeLinejoin="round"
                       />
                     </svg>
-                  </div>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {abierto === i && (
+                      <motion.div
+                        id={`servicio-detalle-${i}`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: reduce ? 0 : 0.35, ease: "easeOut" }}
+                        className="overflow-hidden"
+                      >
+                        <p className="pb-[14px] pl-[22px] text-[13px] font-light leading-[1.6] text-white/60 md:text-[14px]">
+                          {item.detalle.join(" | ")}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </Reveal>
               ))}
             </ul>
@@ -204,9 +229,11 @@ export default function Services() {
                       <h3 className="mt-4 text-[17px] font-light leading-snug text-white md:mt-5 md:text-[19px]">
                         {card.title}
                       </h3>
-                      <p className="mt-1.5 text-[13px] font-light leading-snug text-white/50 md:text-[14px]">
-                        {card.subtitle}
-                      </p>
+                      {card.subtitle && (
+                        <p className="mt-1.5 text-[13px] font-light leading-snug text-white/50 md:text-[14px]">
+                          {card.subtitle}
+                        </p>
+                      )}
                     </div>
                   </Reveal>
                 ))}

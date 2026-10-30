@@ -69,7 +69,7 @@ export default function ClosingCta() {
   });
 
   return (
-    <section className="relative z-10 flex min-h-[90svh] items-center justify-center overflow-hidden px-4 py-24 md:px-[4%]">
+    <section className="relative z-10 flex min-h-[90svh] items-center justify-center overflow-hidden px-4 py-24 md:px-[5.5%]">
       <div aria-hidden="true" className="absolute left-[4.7%] top-1/2 hidden -translate-y-1/2 md:block">
         <Dots pattern={[false, true, false]} invert={invert} />
       </div>
@@ -103,7 +103,7 @@ export default function ClosingCta() {
         <Prism onReady={() => setPrismaListo(true)} />
       </motion.div>
 
-      <div className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-8 px-4 md:bottom-[6%] md:flex-row md:items-end md:justify-between md:px-[4%]">
+      <div className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-8 px-4 md:bottom-[6%] md:flex-row md:items-end md:justify-between md:px-[5.5%]">
         <motion.p
           {...enter(0.6)}
           className="max-w-[250px] text-center text-[17px] font-light leading-[1.25] text-white md:text-left md:text-[24px]"

@@ -93,7 +93,7 @@ export default function Stats() {
   });
 
   return (
-    <section className="relative z-10 px-6 py-[56px] md:px-[4.4%] md:py-[72px]">
+    <section className="relative z-10 px-6 py-[56px] md:px-[5.5%] md:py-[72px]">
       <div className="md:grid md:grid-cols-2">
         <div>
           <motion.div

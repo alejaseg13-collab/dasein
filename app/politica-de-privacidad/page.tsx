@@ -39,7 +39,7 @@ export default function PoliticaDePrivacidad() {
             <Header />
           </IntroProvider>
 
-          <main className="relative z-10 px-[4.4%] pb-[80px] pt-[150px] md:pt-[190px]">
+          <main className="relative z-10 px-[5.5%] pb-[80px] pt-[150px] md:pt-[190px]">
             <h1 className="text-[40px] font-light leading-[1.1] text-white md:text-[56px]">
               Política <span className="font-daisy italic">de privacidad</span>
             </h1>

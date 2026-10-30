@@ -16,7 +16,7 @@ export function useIntro() {
   return useContext(IntroContext);
 }
 
-const INTRO_END_MS = 1600;
+const INTRO_END_MS = 2400;
 
 let started = false;
 const listeners = new Set<() => void>();

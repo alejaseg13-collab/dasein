@@ -176,7 +176,7 @@ export default function Testimonials() {
   const actual = ((pos % n) + n) % n;
 
   return (
-    <section className="relative z-10 px-6 py-[56px] md:px-[4.3%] md:py-[80px]">
+    <section className="relative z-10 px-6 py-[56px] md:px-[5.5%] md:py-[80px]">
       <div className="md:grid md:grid-cols-[30%_70%]">
         <div>
           <motion.div

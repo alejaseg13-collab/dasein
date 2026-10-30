@@ -16,7 +16,7 @@ const ISOTIPO_PATHS = [
 
 export default function Divider() {
   return (
-    <section className="relative z-10 px-6 md:px-[60px]">
+    <section className="relative z-10 px-6 md:px-[5.5%]">
       <div className="relative flex h-[40px] items-center justify-between px-5">
         <span className="text-[15px] leading-none text-white/70 md:text-[18px]">
           © 2026.
@@ -55,8 +55,6 @@ export default function Divider() {
           className="pointer-events-none absolute inset-x-0 top-[calc(50%+9px)] h-px bg-white/10"
         />
       </div>
-
-      <div aria-hidden="true" className="mt-[26px] h-px w-full bg-white/45" />
     </section>
   );
 }

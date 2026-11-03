@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { useIntro } from "@/components/IntroProvider";
 
 function horaColombia(): string {
   return new Intl.DateTimeFormat("es-CO", {
@@ -16,7 +15,6 @@ function horaColombia(): string {
 
 export default function Header() {
   const reduce = useReducedMotion();
-  const { running } = useIntro();
   // La hora se calcula solo en el cliente (new Date() no puede usarse en el
   // prerender): "--:--" como marcador estable hasta el primer tick.
   const [hora, setHora] = useState("");
@@ -38,11 +36,7 @@ export default function Header() {
   }, []);
 
   return (
-    <motion.header
-      data-intro
-      initial={{ opacity: 0, y: -10 }}
-      animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-      transition={{ duration: 0.4, ease: "easeOut", delay: 0.8 }}
+    <header
       className="absolute inset-x-0 top-0 z-40 px-5 pt-7 sm:px-6 md:px-[5.5%] md:pt-[38px]"
     >
       <div className="flex items-center justify-between gap-6">
@@ -73,12 +67,8 @@ export default function Header() {
 
         <motion.a
           href="#contacto"
-          data-intro
-          initial={{ opacity: 0 }}
-          animate={running ? { opacity: 1 } : { opacity: 0 }}
           whileHover={reduce ? undefined : { y: -4 }}
           transition={{
-            opacity: { duration: 0.25, ease: "easeOut", delay: 1.1 },
             y: { type: "spring", stiffness: 300, damping: 20 },
           }}
           className="inline-flex shrink-0 items-center gap-2.5 rounded-[10px] bg-white px-4 py-2.5 text-[13px] font-medium text-[#00272c] transition-colors hover:bg-white/90 sm:px-[18px] sm:py-3 sm:text-[13.5px]"
@@ -97,6 +87,6 @@ export default function Header() {
       </div>
 
       <div className="mt-4 h-px w-full bg-white/25 md:mt-[19px]" />
-    </motion.header>
+    </header>
   );
 }

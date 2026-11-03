@@ -11,9 +11,9 @@ const WHATSAPP_NUMBER = "573122468060";
 
 const EASE_OUT = "easeOut" as const;
 
-const clashDisplay = localFont({
-  src: "../public/fonts/clash-display/clashdisplay-variable.ttf",
-  weight: "200 700",
+const sharpXb = localFont({
+  src: "../public/fonts/sharp-sans/sharp-sans-extrabold.otf",
+  weight: "800",
   display: "swap",
 });
 
@@ -79,13 +79,13 @@ export default function ClosingCta() {
 
       <h2
         style={{ opacity: prismaListo ? 0 : 1 }}
-        className={`relative z-10 text-center text-[44px] uppercase leading-[1.05] tracking-[-0.01em] text-white transition-opacity duration-700 md:text-[clamp(60px,6.4vw,96px)] ${clashDisplay.className}`}
+        className="relative z-10 text-center text-[44px] uppercase leading-[1.05] tracking-[-0.01em] text-white transition-opacity duration-700 md:text-[clamp(60px,6.4vw,96px)]"
       >
-        <motion.span {...enter(0)} className="block font-bold">
+        <motion.span {...enter(0)} className={`block font-extrabold ${sharpXb.className}`}>
           Demos forma
         </motion.span>
         <motion.span {...enter(0.12)} className="block">
-          <span className="font-bold">Y dirección</span>
+          <span className={`font-extrabold ${sharpXb.className}`}>Y dirección</span>
           <span className="font-light"> a tus</span>
         </motion.span>
         <motion.span {...enter(0.24)} className="block font-light">
@@ -118,7 +118,7 @@ export default function ClosingCta() {
             href={`https://wa.me/${WHATSAPP_NUMBER}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-[56px] w-[235px] items-center justify-center gap-2.5 rounded-[6px] border border-white text-[15px] font-medium text-white transition-colors duration-300 hover:bg-white hover:text-[#111]"
+            className="inline-flex h-[56px] items-center justify-center gap-2.5 rounded-[6px] border border-white px-7 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-white hover:text-[#111]"
           >
             <WhatsAppIcon />
             Hablemos por WhatsApp

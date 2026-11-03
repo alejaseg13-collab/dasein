@@ -149,9 +149,9 @@ function Contenido({
       const cx = r.left + r.width / 2;
       const cy = r.top + r.height / 2 - CUBE_Y;
       const sobre = Math.abs(e.clientX - cx) < cube * 0.6 && Math.abs(e.clientY - cy) < cube * 0.6;
-      const k = 0.006 * (sobre ? 1.5 : 1);
-      vel.current.y = clamp(vel.current.y + dx * k, -2.5, 2.5);
-      vel.current.x = clamp(vel.current.x + dy * k, -2.5, 2.5);
+      const k = 0.011 * (sobre ? 2 : 1);
+      vel.current.y = clamp(vel.current.y + dx * k, -3.5, 3.5);
+      vel.current.x = clamp(vel.current.x + dy * k, -3.5, 3.5);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
@@ -194,12 +194,12 @@ function Contenido({
   let k = 0;
   return (
     <>
-      <ambientLight intensity={0.7} />
-      <Environment resolution={256} frames={1}>
-        <Lightformer form="rect" intensity={8} position={[0, 4, -6]} scale={[12, 6, 1]} color="#ffffff" />
+      <ambientLight intensity={0.95} />
+      <Environment resolution={512} frames={1}>
+        <Lightformer form="rect" intensity={13} position={[0, 4, -6]} scale={[12, 6, 1]} color="#ffffff" />
         <Lightformer
           form="rect"
-          intensity={5}
+          intensity={9}
           position={[-6, 2, 2]}
           rotation-y={Math.PI / 2}
           scale={[8, 8, 1]}
@@ -207,13 +207,19 @@ function Contenido({
         />
         <Lightformer
           form="rect"
-          intensity={3}
+          intensity={7}
           position={[6, -2, 2]}
           rotation-y={-Math.PI / 2}
           scale={[8, 8, 1]}
           color="#ffffff"
         />
-        <Lightformer form="ring" intensity={4} position={[0, 0, 6]} scale={4} color="#ffffff" />
+        <Lightformer form="ring" intensity={7} position={[0, 0, 6]} scale={4} color="#ffffff" />
+        <Lightformer form="rect" intensity={6} position={[4, 5, 3]} rotation-x={Math.PI / 3} scale={[7, 4, 1]} color="#eafffb" />
+        {/* destellos de color (estilo prisma/iridiscencia de la referencia) */}
+        <Lightformer form="circle" intensity={18} position={[3, 2, -4]} scale={2.6} color="#ffb64d" />
+        <Lightformer form="circle" intensity={16} position={[-4, -1, 3]} scale={2.2} color="#4d82ff" />
+        <Lightformer form="circle" intensity={14} position={[1, -3, -3]} scale={2} color="#a06bff" />
+        <Lightformer form="ring" intensity={11} position={[-2, 4, 4]} scale={3} color="#7de8ff" />
       </Environment>
 
       <group ref={group} position={[0, CUBE_Y, 0]}>
@@ -222,8 +228,8 @@ function Contenido({
             transmission={1}
             thickness={cube * 0.12}
             roughness={0}
-            ior={1.25}
-            chromaticAberration={0.1}
+            ior={1.45}
+            chromaticAberration={0.3}
             anisotropicBlur={0.05}
             distortion={0.04}
             distortionScale={0.1}

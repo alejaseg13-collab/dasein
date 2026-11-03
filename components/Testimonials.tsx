@@ -73,10 +73,10 @@ function Card({
             reduce || instant ? { duration: 0 } : { duration: SLIDE, ease: EASE_INOUT },
         }}
       >
-        <div className="relative h-[300px] rounded-[28px] rounded-bl-none border border-white/30 bg-[linear-gradient(150deg,rgba(62,13,9,0.72)_0%,rgba(41,10,8,0.55)_100%)] backdrop-blur-[10px] transition-colors duration-300 group-hover:border-white/55 md:h-[248px]">
+        <div className="relative h-[300px] rounded-[28px] rounded-bl-none border border-b-0 border-white/30 bg-[linear-gradient(150deg,rgba(62,13,9,0.72)_0%,rgba(41,10,8,0.55)_100%)] backdrop-blur-[10px] transition-colors duration-300 group-hover:border-white/55 md:h-[248px]">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-[inherit] [box-shadow:inset_1px_1px_0_rgba(255,255,255,0.22),inset_-1px_-1px_0_rgba(255,255,255,0.18)]"
+            className="pointer-events-none absolute inset-0 rounded-[inherit] [box-shadow:inset_1px_1px_0_rgba(255,255,255,0.22)]"
           />
           <div className="flex h-full flex-col px-7 py-[28px] md:px-[40px]">
             <p className="text-[16px] leading-[30px] text-white">&quot;{t.texto}&quot;</p>

@@ -55,14 +55,8 @@ export const serviceCards: ServiceCard[] = [
     alt: "Gota de cristal suspendida de una rama con una luz en su interior, sobre fondo morado",
   },
   {
-    title: "Presencia digital",
-    subtitle: "",
-    image: "/images/Presencia%20digital.png",
-    alt: "Plumínero negro dejando caer una gota de tinta sobre una piedra oscura",
-  },
-  {
     title: "Estrategias de marca",
-    subtitle: "Pauta y parrillas de contenido",
+    subtitle: "Pauta y campañas que funcionan",
     image: "/images/Estrategias%20de%20marca.png",
     alt: "Carretera nocturna iluminada por rayos de luz que se pierden hacia el horizonte",
   },
@@ -71,5 +65,11 @@ export const serviceCards: ServiceCard[] = [
     subtitle: "Desarrollamos tus ideas digitales",
     image: "/images/Sitios%20web.png",
     alt: "Dos cables eléctricos conectados con un destello de luz entre sus puntas",
+  },
+  {
+    title: "Presencia digital",
+    subtitle: "Gestión de canales y diseño de contenido",
+    image: "/images/Presencia%20digital.png",
+    alt: "Plumínero negro dejando caer una gota de tinta sobre una piedra oscura",
   },
 ];

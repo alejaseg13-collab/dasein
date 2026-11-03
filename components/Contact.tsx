@@ -153,7 +153,7 @@ export default function Contact() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ amount: 0.15 }}
         transition={{ duration: 0.9, ease: EASE_OUT }}
-        className="rounded-[32px] border border-white/80 bg-[linear-gradient(140deg,rgba(89,21,20,0.78)_0%,rgba(62,13,9,0.62)_100%)] p-3 md:rounded-[60px] md:p-5"
+        className="rounded-[32px] border border-white/80 bg-[linear-gradient(140deg,rgba(89,21,20,0.78)_0%,rgba(62,13,9,0.62)_100%)] p-3 md:mx-auto md:max-w-[1440px] md:rounded-[60px] md:p-5"
       >
         <div className="md:grid md:grid-cols-[55%_45%]">
           <motion.div
@@ -253,7 +253,7 @@ export default function Contact() {
                       type="button"
                       onMouseEnter={() => setActivo(i)}
                       onClick={() => setActivo(i)}
-                      className={`flex flex-row items-center gap-3 rounded-[20px] p-3 text-left transition-colors duration-[600ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 md:h-[176px] md:flex-1 md:flex-col md:justify-between md:p-5 ${
+                      className={`flex flex-row items-center gap-3 rounded-[20px] p-3 text-left transition-colors duration-[600ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 md:h-[176px] md:flex-1 md:flex-col md:items-start md:justify-between md:p-5 ${
                         activa ? "border border-white bg-white" : "border border-white/30 bg-black/35"
                       }`}
                     >

@@ -1,11 +1,27 @@
 "use client";
 
-import { motion, MotionConfig } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, MotionConfig, useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 
 const EASE_OUT = "easeOut" as const;
 
 export default function NetworkSection() {
+  const reduce = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (reduce) {
+      video.pause();
+      video.currentTime = 0;
+    } else {
+      video.play().catch(() => {
+        /* autoplay bloqueado: queda en el primer frame */
+      });
+    }
+  }, [reduce]);
   return (
     <MotionConfig reducedMotion="user">
       <section className="relative z-10 pt-[64px] pb-[72px] md:pt-[96px] md:pb-[96px]">
@@ -22,7 +38,7 @@ export default function NetworkSection() {
           <Reveal
             as="p"
             delay={0.2}
-            className="mt-6 text-[15px] font-light leading-[1.55] text-[#9c9aa0] md:mt-0 md:text-[19px]"
+            className="mt-6 text-[15px] font-normal leading-[1.55] text-white/80 md:mt-0 md:text-[19px]"
           >
             Diseñamos para que tu negocio crezca, se diferencie y conecte. Conectamos cada punto
             de tu negocio para crear marcas fuertes, productos que funcionan y experiencias que
@@ -35,21 +51,17 @@ export default function NetworkSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ amount: 0.25 }}
           transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.15 }}
-          className="relative mx-[4.5%] mt-[56px] overflow-hidden md:mt-[80px]"
+          className="relative mx-[5.5%] mt-[56px] overflow-hidden md:mt-[80px]"
         >
           <div className="aspect-video w-full">
-            <motion.img
-              src="/images/fondo-red-poster.webp"
-              alt=""
-              initial={{ scale: 1.05, x: "-1.5%" }}
-              whileInView={{ scale: 1.15, x: "1.5%" }}
-              viewport={{ amount: 0.25 }}
-              transition={{
-                duration: 6,
-                ease: "easeInOut",
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
+            <video
+              ref={videoRef}
+              src="/videos/Loop-ADN.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
               className="h-full w-full object-cover"
             />
           </div>

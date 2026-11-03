@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import IntroProvider from "@/components/IntroProvider";
 import Clients from "@/components/Clients";
@@ -63,7 +62,6 @@ export default function Home() {
         <div className="relative">
           <IntroProvider>
             <Hero />
-            <Header />
           </IntroProvider>
         </div>
         {/* flow-root: Clients lleva -mt-[110px]; sin BFC ese margen colapsaría

@@ -75,10 +75,7 @@ export default function Manifesto() {
           </span>
         </span>
 
-        <motion.span
-          {...word(0.12)}
-          className="mt-3 block whitespace-nowrap md:mt-0 md:tracking-[0.07em]"
-        >
+        <motion.span {...word(0.12)} className="mt-3 block whitespace-nowrap md:mt-0">
           Agencia digital
         </motion.span>
 

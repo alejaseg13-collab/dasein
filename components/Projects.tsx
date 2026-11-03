@@ -116,7 +116,7 @@ export default function Projects() {
           <Reveal
             as="p"
             delay={0.2}
-            className="mt-6 text-[17px] font-light leading-[1.45] text-white/90 md:mt-0 md:text-[26px]"
+            className="mt-6 text-[17px] font-light leading-[1.45] text-white/90 md:mt-0"
           >
             Explora una selección de nuestros proyectos más recientes, creatividad, estrategia y
             experiencia de usuario.

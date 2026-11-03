@@ -9,9 +9,11 @@ import {
   useTransform,
 } from "framer-motion";
 import { useIntro } from "@/components/IntroProvider";
+import Header from "@/components/Header";
 
-const EASE_OUT = "easeOut" as const;
 const EASE_INOUT = [0.37, 0, 0.63, 1] as const;
+const CLIP_RECT = "inset(14% 10% 32% 46% round 16px)";
+const CLIP_FULL = "inset(0% 0% 0% 0% round 0px)";
 
 export default function Hero() {
   const { running } = useIntro();
@@ -75,8 +77,8 @@ export default function Hero() {
       <motion.div
         data-intro-clip
         className="absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: running ? 1 : 0 }}
+        initial={{ clipPath: CLIP_RECT, opacity: 0 }}
+        animate={{ clipPath: running ? CLIP_FULL : CLIP_RECT, opacity: running ? 1 : 0 }}
         transition={{ duration: 1.2, ease: EASE_INOUT, delay: 0.6 }}
       >
         <div className="absolute inset-0">
@@ -114,14 +116,10 @@ export default function Hero() {
             />
           </motion.div>
         </div>
-      </motion.div>
 
       <div className="relative z-30 px-6 md:px-[5.5%]">
-        <motion.div
+        <div
           data-intro
-          initial={{ opacity: 0, y: 8 }}
-          animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ duration: 0.3, ease: EASE_OUT, delay: 0.8 }}
           className="flex items-center gap-3 pt-[28vh] md:pt-[clamp(220px,25svh,300px)]"
         >
           <span className="flex h-[17px] w-[17px] shrink-0 items-center justify-center rounded-full border border-white/80">
@@ -130,42 +128,25 @@ export default function Hero() {
           <span className="text-[12px] font-medium uppercase leading-none tracking-[0.2em] text-white md:text-[13px]">
             Todo tu proyecto a medida
           </span>
-        </motion.div>
+        </div>
 
         <h1 className="mt-[18px] max-w-[720px] text-[40px] font-light leading-[0.98] tracking-[-0.015em] text-white md:text-[clamp(56px,4.6vw,70px)] md:leading-[1.11]">
-          {["La presencia", "no se encuentra,"].map((line, i) => (
+          {["La presencia", "no se encuentra,"].map((line) => (
             <span key={line} className="block overflow-hidden pb-[0.1em] -mb-[0.1em]">
-              <motion.span
-                data-intro
-                className="block"
-                initial={{ y: "110%" }}
-                animate={{ y: running ? "0%" : "110%" }}
-                transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.95 + i * 0.1 }}
-              >
-                {line}
-              </motion.span>
+              <span className="block">{line}</span>
             </span>
           ))}
           <span className="mt-[6px] block overflow-hidden pb-[0.1em] -mb-[0.1em]">
-            <motion.span
-              data-intro
-              className="block font-daisy text-[42px] italic leading-[1.02] md:text-[clamp(68px,5.6vw,85px)]"
-              initial={{ y: "110%" }}
-              animate={{ y: running ? "0%" : "110%" }}
-              transition={{ duration: 0.5, ease: EASE_OUT, delay: 1.15 }}
-            >
+            <span className="block font-daisy text-[42px] italic leading-[1.02] md:text-[clamp(68px,5.6vw,85px)]">
               Se diseña.
-            </motion.span>
+            </span>
           </span>
         </h1>
       </div>
 
       <div className="absolute inset-x-0 bottom-10 z-30 flex flex-col gap-6 px-6 md:contents">
-        <motion.div
+        <div
           data-intro
-          initial={{ opacity: 0, y: 10 }}
-          animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          transition={{ duration: 0.55, ease: EASE_OUT, delay: 1.4 }}
           className="flex flex-col gap-5 md:absolute md:left-12 md:top-[48%] md:flex-row md:items-center md:gap-7"
         >
           <div className="max-w-[340px] md:max-w-[360px]">
@@ -190,16 +171,12 @@ export default function Hero() {
               />
             </svg>
           </a>
-        </motion.div>
+        </div>
 
-        <div className="md:absolute md:left-1/2 md:top-[51%] md:-translate-x-1/2 md:-translate-y-1/2">
-          <motion.button
+        <div className="md:absolute md:left-[60%] md:top-[51%] md:-translate-x-1/2 md:-translate-y-1/2">
+          <button
             type="button"
-            data-intro
             onClick={scrollToNext}
-            initial={{ opacity: 0 }}
-            animate={running ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.45, ease: EASE_OUT, delay: 1.5 }}
             className="flex items-center gap-3"
           >
             <span className="text-[13px] font-light text-white">Desliza y conoce</span>
@@ -209,16 +186,13 @@ export default function Hero() {
                 {...shine}
               />
             </span>
-          </motion.button>
+          </button>
         </div>
 
-        <motion.div
-          data-intro
-          initial={{ opacity: 0, y: 16 }}
-          animate={running ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ duration: 0.5, ease: EASE_OUT, delay: 1.6 }}
-          className="md:absolute md:right-12 md:top-[47%] md:w-[316px]"
-        >
+          <div
+            data-intro
+            className="md:absolute md:right-12 md:top-[47%] md:w-[316px]"
+          >
           <div className="flex items-center gap-3 rounded-[6px] bg-white p-2.5">
             <div
               className="h-[66px] w-[66px] shrink-0 rounded-[6px] bg-[url('/images/hero-astronauta.webp')] bg-[length:200%] bg-[position:80%_48%]"
@@ -230,9 +204,11 @@ export default function Hero() {
                 Narrativa, naming, sistemas visuales y estrategia de marca.
               </p>
             </div>
+            </div>
           </div>
-        </motion.div>
-      </div>
+        </div>
+        <Header />
+      </motion.div>
     </section>
   );
 }

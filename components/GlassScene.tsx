@@ -5,10 +5,16 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, MeshTransmissionMaterial, RoundedBox, Text } from "@react-three/drei";
 
-const FONT_XB = "/fonts/sharp-sans/sharp-sans-extrabold.otf";
-const FONT_LT = "/fonts/sharp-sans/sharp-sans-light.otf";
-const FAM_XB = "SharpSansXB";
-const FAM_LT = "SharpSansLT";
+const FONT_CLASH = "/fonts/clash-display/clashdisplay-variable.ttf";
+const FAM_CLASH = "ClashDisplay";
+
+/** Ancho real de un nodo del DOM (usa las mismas fuentes/weights/tracking que
+ * el titular HTML → calza con lo que troika renderiza en el canvas). */
+function medirTexto(el: Element): number {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  return range.getBoundingClientRect().width;
+}
 
 const BASE_X = 0.45;
 const BASE_Y = 0.55;
@@ -18,18 +24,6 @@ const SPIN_Y = 0.18;
 const CUBE_Y = 30;
 const FLOAT_PX = 6;
 const TEXT_Z = -380;
-
-let medirCtx: CanvasRenderingContext2D | null = null;
-function medir(texto: string, familia: string, size: number) {
-  if (!medirCtx) medirCtx = document.createElement("canvas").getContext("2d");
-  const ctx = medirCtx;
-  if (!ctx) return texto.length * size * 0.6;
-  ctx.font = `400 ${size}px "${familia}"`;
-  // compensa el letterSpacing (-0.01em) que aplica troika
-  return ctx.measureText(texto).width + texto.length * -0.01 * size;
-}
-
-type Texto3D = { fillOpacity: number };
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v));
@@ -53,6 +47,7 @@ function Contenido({
   reduce,
   activo,
   onReady,
+  onFallback,
 }: {
   isMobile: boolean;
   fontSize: number;
@@ -60,68 +55,85 @@ function Contenido({
   reduce: boolean;
   activo: boolean;
   onReady?: () => void;
+  onFallback?: () => void;
 }) {
   const group = useRef<THREE.Group>(null);
-  const textos = useRef<Array<Texto3D | null>>([]);
   const vel = useRef({ x: 0, y: 0 });
   const ang = useRef({ x: 0, y: 0 });
   const frames = useRef(0);
   const ready = useRef(false);
-  const readyT = useRef<number | null>(null);
+  const fuentesCargadas = useRef(false);
   const [familias, setFamilias] = useState(false);
+  const [tick, setTick] = useState(0);
   const { gl, invalidate } = useThree();
 
+  // Carga de Clash (una sola vez, aunque el padre re-renderice). Si falla,
+  // el HTML queda como titular de respaldo.
   useEffect(() => {
-    if (isMobile) return;
-    let cancelado = false;
+    if (isMobile) {
+      onFallback?.();
+      return;
+    }
+    if (fuentesCargadas.current) return;
+    fuentesCargadas.current = true;
+    let vivo = true;
     (async () => {
       try {
-        const xb = new FontFace(FAM_XB, `url("${FONT_XB}")`);
-        const lt = new FontFace(FAM_LT, `url("${FONT_LT}")`);
-        const [a, b] = await Promise.all([xb.load(), lt.load()]);
-        if (cancelado) return;
-        document.fonts.add(a);
-        document.fonts.add(b);
+        const clash = new FontFace(FAM_CLASH, `url("${FONT_CLASH}")`, { weight: "200 700" });
+        await clash.load();
+        await document.fonts.ready;
+        if (!vivo) return;
+        document.fonts.add(clash);
         setFamilias(true);
       } catch {
-        // si algún .otf no carga, la sección sigue con el titular HTML
-        if (!cancelado) setFamilias(false);
+        if (vivo) onFallback?.();
       }
     })();
     return () => {
-      cancelado = true;
+      vivo = false;
     };
-  }, [isMobile]);
+  }, [isMobile, onFallback]);
 
-  // líneas del titular medidas con las mismas fuentes (solo escritorio)
+  // Si el titular todavía no está en el DOM cuando las fuentes se resuelven,
+  // reintenta la medición en vez de quedarse sin texto3D.
+  useEffect(() => {
+    if (!familias || isMobile) return;
+    const h2 = [...document.querySelectorAll("h2")].find((h) =>
+      h.textContent.toLowerCase().includes("demos forma"),
+    );
+    if (h2) return;
+    const id = window.setTimeout(() => setTick((v) => v + 1), 300);
+    return () => window.clearTimeout(id);
+  }, [familias, isMobile, tick]);
+
+  // líneas del titular: las simples se centran por construcción (anchor center,
+  // sin medir) y la compuesta (bold+light) se mide desde el propio HTML
   const lineas = useMemo(() => {
+    void tick; // invalida el cálculo cuando reintenta la medición
     if (!familias || isMobile) return [];
+    const h2 = [...document.querySelectorAll("h2")].find((h) => h.textContent.toLowerCase().includes("demos forma"));
+    if (!h2) return [];
     const L = fontSize * 1.05;
-    const linea = (segs: { t: string; fam: string }[], i: number) => {
-      const anchos = segs.map((s) => medir(s.t, s.fam, fontSize));
+    const hijos = [...h2.children];
+    return hijos.map((lineaEl, i) => {
+      const spans = [...lineaEl.querySelectorAll(":scope > span")];
+      const segEls = spans.length > 0 ? spans : [lineaEl];
+      const compuesta = segEls.length > 1;
+      const anchos = segEls.map((s) => medirTexto(s));
       const total = anchos.reduce((a, b) => a + b, 0);
       let x = -total / 2;
       return {
         y: (1 - i) * L,
-        segs: segs.map((s, j) => {
-          const seg = { t: s.t, url: s.fam === FAM_XB ? FONT_XB : FONT_LT, x };
-          x += anchos[j];
-          return seg;
+        center: !compuesta,
+        segs: segEls.map((s, j) => {
+          const weight = parseInt(getComputedStyle(s).fontWeight, 10) || 400;
+          const segX = compuesta ? x : 0;
+          if (compuesta) x += anchos[j];
+          return { t: (s.textContent ?? "").toUpperCase(), weight, x: segX };
         }),
       };
-    };
-    return [
-      linea([{ t: "DEMOS FORMA", fam: FAM_XB }], 0),
-      linea(
-        [
-          { t: "Y DIRECCIÓN", fam: FAM_XB },
-          { t: " A TUS", fam: FAM_LT },
-        ],
-        1,
-      ),
-      linea([{ t: "PROYECTOS", fam: FAM_LT }], 2),
-    ];
-  }, [familias, isMobile, fontSize]);
+    });
+  }, [familias, isMobile, fontSize, tick]);
 
   // reduced motion: un solo cuadro estático + cruce del titular
   useEffect(() => {
@@ -178,20 +190,12 @@ function Contenido({
       g.scale.setScalar(0.94 + 0.06 * (1 - Math.pow(1 - e, 3)));
     }
 
-    if (readyT.current != null) {
-      const ft = Math.min(1, (t - readyT.current) / 0.7);
-      const o = 1 - Math.pow(1 - ft, 2);
-      for (const r of textos.current) if (r) r.fillOpacity = o;
-    }
-
     if (!ready.current && !isMobile && familias && frames.current >= 2) {
       ready.current = true;
-      readyT.current = t;
       onReady?.();
     }
   });
 
-  let k = 0;
   return (
     <>
       <ambientLight intensity={0.95} />
@@ -229,47 +233,47 @@ function Contenido({
             thickness={cube * 0.12}
             roughness={0}
             ior={1.45}
-            chromaticAberration={0.3}
+            chromaticAberration={0}
             anisotropicBlur={0.05}
             distortion={0.04}
             distortionScale={0.1}
             temporalDistortion={0}
             samples={isMobile ? 3 : 8}
             resolution={isMobile ? 256 : 512}
-            backside
           />
         </RoundedBox>
       </group>
 
       {!isMobile &&
         lineas.map((linea, i) =>
-          linea.segs.map((seg) => {
-            const idx = k++;
-            return (
-              <Text
-                key={`${i}-${idx}`}
-                ref={(el) => {
-                  textos.current[idx] = el as unknown as Texto3D | null;
-                }}
-                font={seg.url}
-                fontSize={fontSize}
-                fillOpacity={reduce ? 1 : 0}
-                color="#ffffff"
-                anchorX="left"
-                anchorY="middle"
-                letterSpacing={-0.01}
-                position={[seg.x, linea.y, TEXT_Z]}
-              >
-                {seg.t}
-              </Text>
-            );
-          }),
+          linea.segs.map((seg) => (
+            <Text
+              key={`${i}-${seg.t}-${seg.x}`}
+              font={FONT_CLASH}
+              fontWeight={seg.weight}
+              fontSize={fontSize}
+              fillOpacity={1}
+              color="#ffffff"
+              anchorX={linea.center ? "center" : "left"}
+              anchorY="middle"
+              letterSpacing={-0.01}
+              position={[seg.x, linea.y, TEXT_Z]}
+            >
+              {seg.t}
+            </Text>
+          )),
         )}
     </>
   );
 }
 
-export default function GlassScene({ onReady }: { onReady?: () => void }) {
+export default function GlassScene({
+  onReady,
+  onFallback,
+}: {
+  onReady?: () => void;
+  onFallback?: () => void;
+}) {
   const host = useRef<HTMLDivElement>(null);
   const [activo, setActivo] = useState(true);
   const width = useSyncExternalStore(suscribeAncho, () => window.innerWidth, () => 1500);
@@ -309,6 +313,7 @@ export default function GlassScene({ onReady }: { onReady?: () => void }) {
           reduce={reduce}
           activo={activo}
           onReady={onReady}
+          onFallback={onFallback}
         />
       </Canvas>
     </div>

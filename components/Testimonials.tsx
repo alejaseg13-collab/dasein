@@ -73,12 +73,22 @@ function Card({
             reduce || instant ? { duration: 0 } : { duration: SLIDE, ease: EASE_INOUT },
         }}
       >
-        <div className="relative h-[300px] rounded-[28px] rounded-bl-none border border-b-0 border-white/30 bg-[linear-gradient(150deg,rgba(62,13,9,0.72)_0%,rgba(41,10,8,0.55)_100%)] backdrop-blur-[10px] transition-colors duration-300 group-hover:border-white/55 md:h-[248px]">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-[inherit] [box-shadow:inset_1px_1px_0_rgba(255,255,255,0.22)]"
-          />
-          <div className="flex h-full flex-col px-7 py-[28px] md:px-[40px]">
+        <div className="relative h-[300px] md:h-[248px]">
+          {/* burbuja en color plano uniforme: sin degradados que corten */}
+          <div className="absolute inset-0 rounded-[28px] rounded-bl-none border border-b-0 border-white/30 bg-[rgba(48,11,9,0.62)] backdrop-blur-[10px] transition-colors duration-300 group-hover:border-white/55" />
+          {/* cola: mismo color y desenfoque que la burbuja → de corrido */}
+          <div aria-hidden="true" className="absolute left-0 top-full h-[43px] w-[43px]">
+            <div className="absolute inset-0 bg-[rgba(48,11,9,0.62)] backdrop-blur-[10px] [clip-path:polygon(0_0,0_100%,100%_0)]" />
+            <svg className="absolute inset-0 h-full w-full" viewBox="0 0 43 43">
+              <path
+                d="M0.5 0 L0.5 43 L43 0"
+                fill="none"
+                strokeWidth="1"
+                className="stroke-white/30 transition-colors duration-300 group-hover:stroke-white/55"
+              />
+            </svg>
+          </div>
+          <div className="relative z-10 flex h-full flex-col px-7 py-[28px] md:px-[40px]">
             <p className="text-[16px] leading-[30px] text-white">&quot;{t.texto}&quot;</p>
             <div className="mt-3 flex gap-1">
               {[0, 1, 2, 3, 4].map((i) => (
@@ -86,15 +96,6 @@ function Card({
               ))}
             </div>
           </div>
-          <svg className="absolute -bottom-[43px] left-0 h-[43px] w-[43px]" viewBox="0 0 43 43" aria-hidden="true">
-            <path d="M0 0 L0 43 L43 0 Z" fill="rgba(45,11,9,0.6)" />
-            <path
-              d="M0 0 L0 43 L43 0"
-              fill="none"
-              strokeWidth="1"
-              className="stroke-white/35 transition-colors duration-300 group-hover:stroke-white/60"
-            />
-          </svg>
         </div>
 
         <div className="ml-[43px] mt-[20px] flex items-center gap-3">

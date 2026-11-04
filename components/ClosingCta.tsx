@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import localFont from "next/font/local";
 import Image from "next/image";
 import Prism from "@/components/Prism";
 
 // TODO: confirmar el número de WhatsApp con el equipo.
-const WHATSAPP_NUMBER = "573122468060";
+const WHATSAPP_NUMBER = "573209239138";
 
 const EASE_OUT = "easeOut" as const;
 
-const sharpXb = localFont({
-  src: "../public/fonts/sharp-sans/sharp-sans-extrabold.otf",
-  weight: "800",
+const clashDisplay = localFont({
+  src: "../public/fonts/clash-display/clashdisplay-variable.ttf",
+  weight: "200 700",
   display: "swap",
 });
 
@@ -53,7 +53,17 @@ function Dots({ pattern, invert }: { pattern: boolean[]; invert: boolean }) {
 export default function ClosingCta() {
   const reduce = useReducedMotion();
   const [invert, setInvert] = useState(false);
-  const [prismaListo, setPrismaListo] = useState(false);
+  // En desktop el titular se dibuja solo en el canvas3D (el HTML permanece
+  // oculto → nunca se ve un "cambio de letra" al aparecer el cubo). El HTML
+  // solo sirve de fallback: móvil o fuentes que no cargan.
+  const [htmlVisible, setHtmlVisible] = useState(false);
+  const mostrarFallback = useCallback(() => setHtmlVisible(true), []);
+
+  useEffect(() => {
+    if (window.innerWidth >= 768) return;
+    const id = window.setTimeout(() => setHtmlVisible(true), 0);
+    return () => window.clearTimeout(id);
+  }, []);
 
   useEffect(() => {
     if (reduce) return;
@@ -78,14 +88,14 @@ export default function ClosingCta() {
       </div>
 
       <h2
-        style={{ opacity: prismaListo ? 0 : 1 }}
-        className="relative z-10 text-center text-[44px] uppercase leading-[1.05] tracking-[-0.01em] text-white transition-opacity duration-700 md:text-[clamp(60px,6.4vw,96px)]"
+        style={{ opacity: htmlVisible ? 1 : 0 }}
+        className={`relative z-10 text-center text-[44px] uppercase leading-[1.05] tracking-[-0.01em] text-white md:text-[clamp(60px,6.4vw,96px)] ${clashDisplay.className}`}
       >
-        <motion.span {...enter(0)} className={`block font-extrabold ${sharpXb.className}`}>
+        <motion.span {...enter(0)} className="block font-bold">
           Demos forma
         </motion.span>
         <motion.span {...enter(0.12)} className="block">
-          <span className={`font-extrabold ${sharpXb.className}`}>Y dirección</span>
+          <span className="font-bold">Y dirección</span>
           <span className="font-light"> a tus</span>
         </motion.span>
         <motion.span {...enter(0.24)} className="block font-light">
@@ -93,15 +103,9 @@ export default function ClosingCta() {
         </motion.span>
       </h2>
 
-      <motion.div
-        initial={reduce ? false : { opacity: 0, scale: 0.94 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ amount: 0.3 }}
-        transition={{ duration: 1.2, ease: EASE_OUT, delay: 0.4 }}
-        className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
-      >
-        <Prism onReady={() => setPrismaListo(true)} />
-      </motion.div>
+      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+        <Prism onFallback={mostrarFallback} />
+      </div>
 
       <div className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-8 px-4 md:bottom-[6%] md:flex-row md:items-end md:justify-between md:px-[5.5%]">
         <motion.p

@@ -104,7 +104,7 @@ export default function Projects() {
     <MotionConfig reducedMotion="user">
       <section className="relative z-10 overflow-hidden pb-[80px] pt-[80px] md:pb-[104px] md:pt-[100px]">
         <div className="px-[5.5%] md:grid md:grid-cols-[45%_1fr]">
-          <h2 className="text-[13px] uppercase leading-[1.7] text-white md:text-[15px]">
+          <h2 className="text-[24px] uppercase leading-[1.7] text-white md:text-[27px]">
             <Reveal as="span" delay={0} className="block font-semibold">
               Echa un vistazo a algunos
             </Reveal>
@@ -116,7 +116,7 @@ export default function Projects() {
           <Reveal
             as="p"
             delay={0.2}
-            className="mt-6 text-[17px] font-light leading-[1.45] text-white/90 md:mt-0"
+            className="mt-6 text-[15px] font-light leading-[1.55] text-white/90 md:mt-0 md:text-[19px]"
           >
             Explora una selección de nuestros proyectos más recientes, creatividad, estrategia y
             experiencia de usuario.

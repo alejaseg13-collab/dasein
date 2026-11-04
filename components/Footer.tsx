@@ -48,9 +48,14 @@ function FacebookIcon() {
 
 function LinkedinIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden="true">
-      <path d="M4.98 3.5a2.06 2.06 0 11-.02 4.12 2.06 2.06 0 01.02-4.12zM.5 8.5h5V23H.5V8.5zm8 0h4.78v1.98h.07c.66-1.18 2.28-2.43 4.7-2.43 5.03 0 5.96 3.17 5.96 7.3V23h-5v-6.44c0-1.54-.03-3.52-2.15-3.52-2.15 0-2.48 1.67-2.48 3.4V23h-5V8.5z" />
-    </svg>
+    <Image
+      src="/images/Linkedin.svg"
+      alt=""
+      width={310}
+      height={309}
+      unoptimized
+      className="h-[18px] w-[18px]"
+    />
   );
 }
 

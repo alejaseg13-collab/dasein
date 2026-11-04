@@ -38,7 +38,7 @@ export default function Manifesto() {
         className={`mt-[14px] text-[clamp(32px,7.5vw,170px)] font-semibold uppercase leading-[1.35] tracking-[-0.01em] text-white md:leading-[1.12] ${clashDisplay.className}`}
       >
         <span className="flex flex-wrap items-center justify-between gap-x-8 gap-y-9 md:gap-y-7">
-          <motion.span {...word(0)} className="whitespace-nowrap">
+          <motion.span {...word(0)} className="whitespace-nowrap [word-spacing:0.25em]">
             Somos una
           </motion.span>
 
@@ -75,7 +75,7 @@ export default function Manifesto() {
           </span>
         </span>
 
-        <motion.span {...word(0.12)} className="mt-3 block whitespace-nowrap md:mt-0">
+        <motion.span {...word(0.12)} className="mt-3 block whitespace-nowrap [word-spacing:0.25em] md:mt-0">
           Agencia digital
         </motion.span>
 
@@ -98,7 +98,7 @@ export default function Manifesto() {
             </span>
           </motion.span>
 
-          <motion.span {...word(0.22)} className="whitespace-nowrap">
+          <motion.span {...word(0.22)} className="whitespace-nowrap [word-spacing:0.25em]">
             Ganadora
           </motion.span>
         </span>

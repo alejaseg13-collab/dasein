@@ -49,6 +49,12 @@ export const serviceCatalog: { nombre: string; detalle: string[] }[] = [
  */
 export const serviceCards: ServiceCard[] = [
   {
+    title: "Presencia digital",
+    subtitle: "Gestión de canales y diseño de contenido",
+    image: "/images/Presencia%20digital.png",
+    alt: "Plumínero negro dejando caer una gota de tinta sobre una piedra oscura",
+  },
+  {
     title: "Identidades poderosas",
     subtitle: "Lleva tus ideas a una identidad única",
     image: "/images/Identidades%20poderosas.png",
@@ -61,15 +67,9 @@ export const serviceCards: ServiceCard[] = [
     alt: "Carretera nocturna iluminada por rayos de luz que se pierden hacia el horizonte",
   },
   {
-    title: "Sitios web",
+    title: "Sitios web y automatizaciones",
     subtitle: "Desarrollamos tus ideas digitales",
     image: "/images/Sitios%20web.png",
     alt: "Dos cables eléctricos conectados con un destello de luz entre sus puntas",
-  },
-  {
-    title: "Presencia digital",
-    subtitle: "Gestión de canales y diseño de contenido",
-    image: "/images/Presencia%20digital.png",
-    alt: "Plumínero negro dejando caer una gota de tinta sobre una piedra oscura",
   },
 ];

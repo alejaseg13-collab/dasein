@@ -21,7 +21,7 @@ class Boundary extends Component<{ children: ReactNode }, { error: boolean }> {
  * Prisma de vidrio en 3D (Three.js). Carga la escena con ~600 px de
  * antelación a la entrada de la sección en pantalla.
  */
-export default function Prism({ onReady }: { onReady?: () => void }) {
+export default function Prism({ onReady, onFallback }: { onReady?: () => void; onFallback?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const cerca = useInView(ref, { once: true, margin: "0px 0px 600px 0px" });
 
@@ -29,7 +29,7 @@ export default function Prism({ onReady }: { onReady?: () => void }) {
     <div ref={ref} className="h-full w-full">
       {cerca && (
         <Boundary>
-          <GlassScene onReady={onReady} />
+          <GlassScene onReady={onReady} onFallback={onFallback} />
         </Boundary>
       )}
     </div>

@@ -11,6 +11,7 @@ import {
 import { useIntro } from "@/components/IntroProvider";
 import Header from "@/components/Header";
 
+const EASE_OUT = "easeOut" as const;
 const EASE_INOUT = [0.37, 0, 0.63, 1] as const;
 const CLIP_RECT = "inset(14% 10% 32% 46% round 16px)";
 const CLIP_FULL = "inset(0% 0% 0% 0% round 0px)";
@@ -122,32 +123,54 @@ export default function Hero() {
           data-intro
           className="flex items-center gap-3 pt-[28vh] md:pt-[clamp(220px,25svh,300px)]"
         >
-          <span className="flex h-[17px] w-[17px] shrink-0 items-center justify-center rounded-full border border-white/80">
+          <motion.span
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: running ? 1 : 0 }}
+            transition={{ duration: 0.4, ease: EASE_OUT, delay: 1.45 }}
+            className="flex h-[17px] w-[17px] shrink-0 items-center justify-center rounded-full border border-white/80"
+          >
             <span className="h-[3px] w-[3px] rounded-full bg-white" />
-          </span>
-          <span className="text-[12px] font-medium uppercase leading-none tracking-[0.2em] text-white md:text-[13px]">
+          </motion.span>
+          <motion.span
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: running ? 1 : 0 }}
+            transition={{ duration: 0.4, ease: EASE_OUT, delay: 1.45 }}
+            className="text-[12px] font-medium uppercase leading-none tracking-[0.2em] text-white md:text-[13px]"
+          >
             Todo tu proyecto a medida
-          </span>
+          </motion.span>
         </div>
 
         <h1 className="mt-[18px] max-w-[720px] text-[40px] font-light leading-[0.98] tracking-[-0.015em] text-white md:text-[clamp(56px,4.6vw,70px)] md:leading-[1.11]">
-          {["La presencia", "no se encuentra,"].map((line) => (
+          {["La presencia", "no se encuentra,"].map((line, i) => (
             <span key={line} className="block overflow-hidden pb-[0.1em] -mb-[0.1em]">
-              <span className="block">{line}</span>
+              <motion.span
+                className="block"
+                initial={reduce ? false : { y: "110%" }}
+                animate={{ y: running ? "0%" : "110%" }}
+                transition={{ duration: 0.5, ease: EASE_OUT, delay: 1.55 + i * 0.12 }}
+              >
+                {line}
+              </motion.span>
             </span>
           ))}
           <span className="mt-[6px] block overflow-hidden pb-[0.1em] -mb-[0.1em]">
-            <span className="block font-daisy text-[42px] italic leading-[1.02] md:text-[clamp(68px,5.6vw,85px)]">
+            <motion.span
+              className="block font-daisy text-[42px] italic leading-[1.02] md:text-[clamp(68px,5.6vw,85px)]"
+              initial={reduce ? false : { y: "110%" }}
+              animate={{ y: running ? "0%" : "110%" }}
+              transition={{ duration: 0.5, ease: EASE_OUT, delay: 1.79 }}
+            >
               Se diseña.
-            </span>
+            </motion.span>
           </span>
         </h1>
       </div>
 
-      <div className="absolute inset-x-0 bottom-10 z-30 flex flex-col gap-6 px-6 md:contents">
+      <div className="absolute inset-x-0 bottom-10 z-30 flex flex-col gap-6 px-6 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:flex-row md:items-center md:justify-between md:gap-8 md:px-[5.5%]">
         <div
           data-intro
-          className="flex flex-col gap-5 md:absolute md:left-12 md:top-[48%] md:flex-row md:items-center md:gap-7"
+          className="flex flex-col gap-5 md:flex-row md:items-center md:gap-7"
         >
           <div className="max-w-[340px] md:max-w-[360px]">
             <div className="mb-[16px] h-px w-full bg-white/50" />
@@ -173,14 +196,14 @@ export default function Hero() {
           </a>
         </div>
 
-        <div className="md:absolute md:left-[60%] md:top-[51%] md:-translate-x-1/2 md:-translate-y-1/2">
+        <div className="shrink-0 md:flex md:flex-1 md:items-center md:justify-center">
           <button
             type="button"
             onClick={scrollToNext}
             className="flex items-center gap-3"
           >
-            <span className="text-[13px] font-light text-white">Desliza y conoce</span>
-            <span className="relative block h-px w-[46px] overflow-hidden bg-white/40">
+            <span className="text-[13px] font-medium text-[#031e31]">Desliza y conoce</span>
+            <span className="relative block h-px w-[46px] overflow-hidden bg-[#031e31]/45">
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
                 {...shine}
@@ -191,7 +214,7 @@ export default function Hero() {
 
           <div
             data-intro
-            className="md:absolute md:right-12 md:top-[47%] md:w-[316px]"
+            className="shrink-0 md:w-[316px]"
           >
           <div className="flex items-center gap-3 rounded-[6px] bg-white p-2.5">
             <div

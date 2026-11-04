@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, MotionConfig, useReducedMotion } from "framer-motion";
+import { MotionConfig, useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
-
-const EASE_OUT = "easeOut" as const;
 
 export default function NetworkSection() {
   const reduce = useReducedMotion();
@@ -46,13 +44,7 @@ export default function NetworkSection() {
           </Reveal>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 1.04 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ amount: 0.25 }}
-          transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.15 }}
-          className="relative mx-[5.5%] mt-[56px] overflow-hidden md:mt-[80px]"
-        >
+        <div className="relative mx-[5.5%] mt-[56px] overflow-hidden md:mt-[80px]">
           <div className="aspect-video w-full">
             <video
               ref={videoRef}
@@ -65,22 +57,7 @@ export default function NetworkSection() {
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <motion.div
-              initial={{ x: "-60%" }}
-              whileInView={{ x: "210%" }}
-              viewport={{ amount: 0.25 }}
-              transition={{
-                duration: 2.5,
-                ease: "easeInOut",
-                delay: 1.5,
-                repeat: Infinity,
-                repeatDelay: 5,
-              }}
-              className="absolute -top-[20%] left-0 h-[140%] w-[45%] rotate-[-10deg] bg-gradient-to-r from-transparent via-white/15 to-transparent blur-[6px]"
-            />
-          </div>
-        </motion.div>
+        </div>
       </section>
     </MotionConfig>
   );

@@ -128,8 +128,6 @@ export default function Services() {
   return (
     <MotionConfig reducedMotion="user">
       <section className="relative z-10 pb-[72px] pt-[56px] md:pb-[96px] md:pt-[72px]">
-        <div className="h-px w-full bg-white/30" />
-
         <div className="mt-[64px] flex flex-col gap-12 px-6 md:mt-[88px] md:flex-row md:gap-12 md:px-[5.5%]">
           <div className="md:w-1/4">
             <Reveal as="h2" delay={0} className="text-[36px] font-light leading-[1.04] text-white md:text-[64px]">
@@ -219,10 +217,10 @@ export default function Services() {
                           <Image
                             src={card.image}
                             alt={card.alt}
-                            width={750}
-                            height={1000}
+                            width={1014}
+                            height={1350}
                             unoptimized
-                            className="h-full w-full scale-[1.1] object-cover transition-transform duration-500 ease-out group-hover:scale-[1.14]"
+                            className="h-full w-full object-cover"
                           />
                         </div>
                       </div>

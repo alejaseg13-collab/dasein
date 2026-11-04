@@ -42,19 +42,16 @@ export default function Divider() {
           ))}
         </svg>
 
-        <span
-          aria-hidden="true"
-          className="flex w-[52px] shrink-0 flex-col items-end gap-[7px] md:w-[58px]"
-        >
-          <span className="h-[2px] w-[72%] bg-white/85" />
-          <span className="h-[2px] w-full bg-white/85" />
-        </span>
-
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-[calc(50%+9px)] h-px bg-white/10"
-        />
+          <span
+            aria-hidden="true"
+            className="flex w-[52px] shrink-0 flex-col items-end gap-[7px] md:w-[58px]"
+          >
+            <span className="h-[2px] w-[72%] bg-white/85" />
+            <span className="h-[2px] w-full bg-white/85" />
+          </span>
       </div>
+
+      <div aria-hidden="true" className="mt-[26px] h-[2px] w-full bg-white/55" />
     </section>
   );
 }

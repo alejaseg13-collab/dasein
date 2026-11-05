@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   motion,
   useReducedMotion,
@@ -33,18 +33,6 @@ export default function Hero() {
         animate: { opacity: [0.45, 0.8, 0.45] },
         transition: { duration: 6, repeat: Infinity, ease: "easeInOut" as const },
       };
-
-  const shine = reduce
-    ? {}
-    : {
-        animate: { x: ["-100%", "100%"] },
-        transition: { duration: 2.6, repeat: Infinity, ease: "linear" as const },
-      };
-
-  const scrollToNext = useCallback(() => {
-    const next = document.querySelectorAll("section")[1];
-    next?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-  }, [reduce]);
 
   const heroRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -168,8 +156,11 @@ export default function Hero() {
       </div>
 
       <div className="absolute inset-x-0 bottom-10 z-30 flex flex-col gap-6 px-6 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:flex-row md:items-center md:justify-between md:gap-8 md:px-[5.5%]">
-        <div
+        <motion.div
           data-intro
+          initial={reduce ? false : { opacity: 0, y: 24 }}
+          animate={{ opacity: running ? 1 : 0, y: running ? 0 : 24 }}
+          transition={{ duration: 0.8, ease: EASE_OUT, delay: 1.95 }}
           className="flex flex-col gap-5 md:flex-row md:items-center md:gap-7"
         >
           <div className="max-w-[340px] md:max-w-[360px]">
@@ -194,26 +185,13 @@ export default function Hero() {
               />
             </svg>
           </a>
-        </div>
+        </motion.div>
 
-        <div className="shrink-0 md:flex md:flex-1 md:items-center md:justify-center">
-          <button
-            type="button"
-            onClick={scrollToNext}
-            className="flex items-center gap-3"
-          >
-            <span className="text-[13px] font-medium text-[#031e31]">Desliza y conoce</span>
-            <span className="relative block h-px w-[46px] overflow-hidden bg-[#031e31]/45">
-              <motion.span
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
-                {...shine}
-              />
-            </span>
-          </button>
-        </div>
-
-          <div
+          <motion.div
             data-intro
+            initial={reduce ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: running ? 1 : 0, y: running ? 0 : 24 }}
+            transition={{ duration: 0.8, ease: EASE_OUT, delay: 2.1 }}
             className="shrink-0 md:w-[316px]"
           >
           <div className="flex items-center gap-3 rounded-[6px] bg-white p-2.5">
@@ -228,9 +206,9 @@ export default function Hero() {
               </p>
             </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-        <Header />
+        <Header intro />
       </motion.div>
     </section>
   );

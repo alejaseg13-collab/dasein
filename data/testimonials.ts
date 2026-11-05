@@ -6,33 +6,37 @@ export interface Testimonial {
   alt: string;
 }
 
-// TODO: nombre y empresa son PROVISIONALES (las tres tarjetas llevan los mismos).
-// Las fotos aún no existen: las rutas quedan listas para reemplazar el círculo
-// de iniciales por la imagen real cuando lleguen.
 export const testimonials: Testimonial[] = [
   {
     texto:
-      "Entendieron el ADN de nuestra marca desde el primer día. Pasamos de una identidad desordenada a un sistema visual sólido que impulsó nuestras conversiones.",
-    nombre: "Daniel Pachón",
+      "No solo diseñan, resuelven problemas complicados. Tenia unas etiquetas con las que sufría por organizar mi información y los tamaños, e hicieron un rediseño increible",
+    nombre: "Aura Pachón",
     empresa: "LOLAREPA",
-    foto: "/images/testimonios/avatar-1.webp",
-    alt: "Foto de Daniel Pachón",
+    foto: "/images/Lolarepa.jpeg",
+    alt: "Foto de Aura Pachón",
   },
   {
     texto:
-      "No solo diseñan, resuelven problemas complejos. La arquitectura de interfaz que desarrollaron para nuestro producto digital redujo la fricción de los usuarios de inmediato.",
-    nombre: "Daniel Pachón",
-    empresa: "LOLAREPA",
-    foto: "/images/testimonios/avatar-2.webp",
-    alt: "Foto de Daniel Pachón",
+      "Entendieron que queríamos con la marca, con una identidad que nos encantó y una web que impulsó nuestras conversiones.",
+    nombre: "Ernesto Ruíz",
+    empresa: "Atria Group",
+    foto: "/images/Atria_Group.jpeg",
+    alt: "Foto de Ernesto Ruíz",
   },
   {
-    // TODO: TEXTO PROVISIONAL, reemplazar por el real
-    // (la tercera tarjeta aparece cortada en design/08-testimonios.jpg).
-    texto: "Un equipo cercano y claro en cada etapa. Todo el proceso fue ordenado y sin fricciones.",
-    nombre: "Daniel Pachón",
-    empresa: "LOLAREPA",
-    foto: "/images/testimonios/avatar-3.webp",
-    alt: "Foto de Daniel Pachón",
+    texto:
+      "Nos entregaron más de lo que esperábamos en la línea gráfica de Casa Fácil, esperaba algo sencillo porque así veía a mi marca, pero me enamoré con el resultado",
+    nombre: "Nicolás Rodriguez",
+    empresa: "Casa Fácil",
+    foto: "/images/CasaFacil.jpeg",
+    alt: "Foto de Nicolás Rodriguez",
+  },
+  {
+    texto:
+      "Son muy directos, me gustó que la idea inicial con la que llegué no fue con la que terminé, propusieron un servicio diferente y tuve grandes mejoras en mis ventas",
+    nombre: "Rosa Molina",
+    empresa: "Boko",
+    foto: "/images/Boko.jpeg",
+    alt: "Foto de Rosa Molina",
   },
 ];

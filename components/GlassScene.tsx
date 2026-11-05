@@ -5,8 +5,10 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, MeshTransmissionMaterial, RoundedBox, Text } from "@react-three/drei";
 
-const FONT_CLASH = "/fonts/clash-display/clashdisplay-variable.ttf";
-const FAM_CLASH = "ClashDisplay";
+const FONT_BOLD = "/fonts/sharp-sans/sharp-sans-extrabold.otf";
+const FONT_LIGHT = "/fonts/sharp-sans/sharp-sans-light.otf";
+const FAM_BOLD = "SharpSansXB";
+const FAM_LIGHT = "SharpSansLight";
 
 /** Ancho real de un nodo del DOM (usa las mismas fuentes/weights/tracking que
  * el titular HTML → calza con lo que troika renderiza en el canvas). */
@@ -67,8 +69,8 @@ function Contenido({
   const [tick, setTick] = useState(0);
   const { gl, invalidate } = useThree();
 
-  // Carga de Clash (una sola vez, aunque el padre re-renderice). Si falla,
-  // el HTML queda como titular de respaldo.
+  // Carga de la fuente del titular (una sola vez, aunque el padre re-renderice).
+  // Si falla, el HTML queda como titular de respaldo.
   useEffect(() => {
     if (isMobile) {
       onFallback?.();
@@ -79,11 +81,13 @@ function Contenido({
     let vivo = true;
     (async () => {
       try {
-        const clash = new FontFace(FAM_CLASH, `url("${FONT_CLASH}")`, { weight: "200 700" });
-        await clash.load();
+        const bold = new FontFace(FAM_BOLD, `url("${FONT_BOLD}")`, { weight: "800" });
+        const light = new FontFace(FAM_LIGHT, `url("${FONT_LIGHT}")`, { weight: "300" });
+        await Promise.all([bold.load(), light.load()]);
         await document.fonts.ready;
         if (!vivo) return;
-        document.fonts.add(clash);
+        document.fonts.add(bold);
+        document.fonts.add(light);
         setFamilias(true);
       } catch {
         if (vivo) onFallback?.();
@@ -230,16 +234,16 @@ function Contenido({
         <RoundedBox args={[cube, cube, cube]} radius={cube * 0.06} smoothness={5}>
           <MeshTransmissionMaterial
             transmission={1}
-            thickness={cube * 0.12}
+            thickness={cube * 0.04}
             roughness={0}
             ior={1.45}
             chromaticAberration={0}
-            anisotropicBlur={0.05}
-            distortion={0.04}
+            anisotropicBlur={0}
+            distortion={0}
             distortionScale={0.1}
             temporalDistortion={0}
             samples={isMobile ? 3 : 8}
-            resolution={isMobile ? 256 : 512}
+            resolution={isMobile ? 512 : 2048}
           />
         </RoundedBox>
       </group>
@@ -249,7 +253,7 @@ function Contenido({
           linea.segs.map((seg) => (
             <Text
               key={`${i}-${seg.t}-${seg.x}`}
-              font={FONT_CLASH}
+              font={seg.weight > 300 ? FONT_BOLD : FONT_LIGHT}
               fontWeight={seg.weight}
               fontSize={fontSize}
               fillOpacity={1}
@@ -280,7 +284,7 @@ export default function GlassScene({
   const reduce = useSyncExternalStore(suscribeReduce, () => window.matchMedia("(prefers-reduced-motion: reduce)").matches, () => false);
 
   const isMobile = width < 768;
-  const fontSize = isMobile ? 44 : Math.min(96, Math.max(60, width * 0.064));
+  const fontSize = isMobile ? 48 : Math.min(108, Math.max(64, width * 0.072));
   const cube = isMobile ? 170 : width * 0.24;
 
   useEffect(() => {

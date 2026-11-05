@@ -11,9 +11,17 @@ const WHATSAPP_NUMBER = "573209239138";
 
 const EASE_OUT = "easeOut" as const;
 
-const clashDisplay = localFont({
-  src: "../public/fonts/clash-display/clashdisplay-variable.ttf",
-  weight: "200 700",
+// Misma fuente del párrafo "Si prefieres un contacto más directo…" (Sharp Sans),
+// respetando la parte bold y la parte light del titular.
+const sharpBold = localFont({
+  src: "../public/fonts/sharp-sans/sharp-sans-extrabold.otf",
+  weight: "800",
+  display: "swap",
+});
+
+const sharpLight = localFont({
+  src: "../public/fonts/sharp-sans/sharp-sans-light.otf",
+  weight: "300",
   display: "swap",
 });
 
@@ -89,16 +97,16 @@ export default function ClosingCta() {
 
       <h2
         style={{ opacity: htmlVisible ? 1 : 0 }}
-        className={`relative z-10 text-center text-[44px] uppercase leading-[1.05] tracking-[-0.01em] text-white md:text-[clamp(60px,6.4vw,96px)] ${clashDisplay.className}`}
+        className={`relative z-10 text-center text-[48px] uppercase leading-[1.05] tracking-[-0.01em] text-white md:text-[clamp(64px,7.2vw,108px)]`}
       >
-        <motion.span {...enter(0)} className="block font-bold">
+        <motion.span {...enter(0)} className={`block font-extrabold ${sharpBold.className}`}>
           Demos forma
         </motion.span>
         <motion.span {...enter(0.12)} className="block">
-          <span className="font-bold">Y dirección</span>
-          <span className="font-light"> a tus</span>
+          <span className={`font-extrabold ${sharpBold.className}`}>Y dirección</span>
+          <span className={`font-light ${sharpLight.className}`}> a tus</span>
         </motion.span>
-        <motion.span {...enter(0.24)} className="block font-light">
+        <motion.span {...enter(0.24)} className={`block font-light ${sharpLight.className}`}>
           Proyectos
         </motion.span>
       </h2>

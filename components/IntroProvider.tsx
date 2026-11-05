@@ -16,7 +16,9 @@ export function useIntro() {
   return useContext(IntroContext);
 }
 
-const INTRO_END_MS = 2400;
+// Deja terminar todas las entradas escalonadas del hero (la última arranca
+// a los 2.1 s y dura 0.8 s) antes de desbloquear el scroll.
+const INTRO_END_MS = 3000;
 
 let started = false;
 const listeners = new Set<() => void>();

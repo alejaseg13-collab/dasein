@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { testimonials, type Testimonial } from "@/data/testimonials";
 
@@ -50,11 +51,6 @@ function Card({
   active: boolean;
   instant: boolean;
 }) {
-  const iniciales = t.nombre
-    .split(" ")
-    .map((p) => p[0])
-    .join("");
-
   return (
     <motion.div
       initial={reduce ? false : { opacity: 0, y: 24 }}
@@ -99,11 +95,14 @@ function Card({
         </div>
 
         <div className="ml-[43px] mt-[20px] flex items-center gap-3">
-          {/* TODO: cuando lleguen las fotos (t.foto en /images/testimonios),
-              reemplazar este círculo de iniciales por la imagen circular. */}
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/80 bg-white/10 text-[15px] font-medium text-white">
-            {iniciales}
-          </div>
+          <Image
+            src={t.foto}
+            alt={t.alt}
+            width={48}
+            height={48}
+            unoptimized
+            className="h-12 w-12 shrink-0 rounded-full border border-white/80 object-cover"
+          />
           <div>
             <p className="text-[18px] font-medium leading-tight text-white">{t.nombre}</p>
             <p className="mt-1 text-[13px] uppercase leading-tight text-white/80">{t.empresa}</p>

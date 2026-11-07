@@ -187,18 +187,6 @@ async function manejarSolicitud(request: Request): Promise<Response> {
     });
   }
 
-  const transporter = nodemailer.createTransport({
-    host: variable("SMTP_HOST"),
-    port: puerto,
-    // 465 = TLS implícito (secure). 587 = STARTTLS (secure false; nodemailer
-    // negocia el upgrade). La verificación de certificados TLS queda activada.
-    secure: puerto === 465,
-    auth: {
-      user: variable("SMTP_USER"),
-      pass: variable("SMTP_PASS"),
-    },
-  });
-
   const fecha = new Intl.DateTimeFormat("es-CO", {
     timeZone: "America/Bogota",
     dateStyle: "full",
@@ -234,25 +222,46 @@ async function manejarSolicitud(request: Request): Promise<Response> {
     `<p><strong>Página de origen:</strong> ${escapar(pagina)}</p>`,
   ].join("");
 
-  try {
-    await transporter.sendMail({
-      from: `"Formulario web Dasein" <${variable("SMTP_USER")}>`,
-      to: variable("CONTACT_TO"),
-      replyTo: email,
-      subject: "Nueva solicitud de propuesta - Dasein Studio",
-      text: texto,
-      html,
-    });
-    return respuesta(200, RESPUESTA_OK);
-  } catch (error) {
-    registrarFallo("enviar", error);
-    return respuesta(502, {
-      ok: false,
-      error: "No pudimos enviar tu solicitud. Intenta de nuevo más tarde.",
-      // TODO: QUITAR diag tras diagnosticar
-      diag: diagDe("enviar", error),
-    });
+  // Un intento con el puerto del entorno y otro con el otro estándar (465 o
+  // 587): si el primero no conecta (filtro del hosting), se prueba el otro.
+  // Tiempos acotados para que ambos intentos quepan en el timeout de Netlify.
+  // 465 = TLS implícito (secure). 587 = STARTTLS (secure false).
+  const puertos = [...new Set([puerto, puerto === 465 ? 587 : 465])];
+  let fallo: unknown = undefined;
+  for (const p of puertos) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: variable("SMTP_HOST"),
+        port: p,
+        secure: p === 465,
+        auth: {
+          user: variable("SMTP_USER"),
+          pass: variable("SMTP_PASS"),
+        },
+        connectionTimeout: 2000,
+        greetingTimeout: 1500,
+        socketTimeout: 4000,
+      });
+      await transporter.sendMail({
+        from: `"Formulario web Dasein" <${variable("SMTP_USER")}>`,
+        to: variable("CONTACT_TO"),
+        replyTo: email,
+        subject: "Nueva solicitud de propuesta - Dasein Studio",
+        text: texto,
+        html,
+      });
+      return respuesta(200, RESPUESTA_OK);
+    } catch (error) {
+      fallo = error;
+    }
   }
+  registrarFallo("enviar", fallo);
+  return respuesta(502, {
+    ok: false,
+    error: "No pudimos enviar tu solicitud. Intenta de nuevo más tarde.",
+    // TODO: QUITAR diag tras diagnosticar
+    diag: diagDe("enviar", fallo),
+  });
 }
 
 export async function POST(request: Request): Promise<Response> {

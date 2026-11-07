@@ -135,7 +135,7 @@ export default function Projects() {
 
         <div
           ref={zoneRef}
-          className="relative mt-[48px] h-[calc(var(--card)/1.64+2.75rem)] w-full overflow-hidden [--card:86vw] [--gap:4vw] [--marg:5vw] md:mt-[72px] md:[--card:60vw] md:[--gap:3.5vw] md:[--marg:3.7vw]"
+          className="relative mt-[48px] h-[calc(var(--card)/1.64+2.75rem)] w-full overflow-hidden [--card:78vw] [--gap:4vw] [--marg:5vw] md:mt-[72px] md:[--card:52vw] md:[--gap:3.5vw] md:[--marg:3.7vw]"
           role="group"
           aria-label="Carrusel de proyectos"
           tabIndex={0}

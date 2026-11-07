@@ -28,14 +28,37 @@ const VENTANA_MS = 10 * 60 * 1000;
 const MAX_POR_VENTANA = 5;
 const intentosPorIp = new Map<string, { inicio: number; cantidad: number }>();
 
-function respuesta(status: number, cuerpo: { ok: boolean; error?: string }): Response {
+// TODO: QUITAR diag tras diagnosticar
+type Diag = { etapa: string; name: string; code: string; invalidas?: string[] };
+
+function respuesta(
+  status: number,
+  cuerpo: { ok: boolean; error?: string; diag?: Diag },
+): Response {
   return Response.json(cuerpo, { status });
 }
 
 const VARIABLES_ENTORNO = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "CONTACT_TO"];
 
+// Limpieza tolerante: espacios/saltos de los extremos, comillas simples o
+// dobles que envuelvan el valor y caracteres invisibles (saltos, tabs,
+// zero-width) del interior, antes de validar.
+function limpiarValor(valor: string): string {
+  let v = valor;
+  for (let i = 0; i < 3; i++) {
+    const anterior = v;
+    v = v.trim().replace(/^["']|["']$/g, "");
+    if (v === anterior) break;
+  }
+  return v.replace(/[\r\n\t\u200b\u200c\u200d\ufeff]+/g, "");
+}
+
+function variable(nombre: string): string {
+  return limpiarValor(process.env[nombre] ?? "");
+}
+
 function variablesFaltantes(): string[] {
-  return VARIABLES_ENTORNO.filter((nombre) => !process.env[nombre]);
+  return VARIABLES_ENTORNO.filter((nombre) => variable(nombre) === "");
 }
 
 function campoDeError(error: unknown, clave: string): string {
@@ -46,19 +69,33 @@ function campoDeError(error: unknown, clave: string): string {
   return "";
 }
 
-function registrarFallo(error?: unknown): void {
+// TODO: QUITAR diag tras diagnosticar
+function diagDe(etapa: string, error?: unknown, invalidas?: string[]): Diag {
+  return {
+    etapa,
+    name: campoDeError(error, "name"),
+    code: campoDeError(error, "code"),
+    invalidas,
+  };
+}
+
+function registrarFallo(etapa: string, error?: unknown, invalidas?: string[]): void {
   const faltan = variablesFaltantes();
-  const partes = [`faltan=[${faltan.join(", ")}]`];
+  const partes = [`etapa=${etapa}`, `faltan=[${faltan.join(", ")}]`];
+  if (invalidas) partes.push(`invalidas=[${invalidas.join(", ")}]`);
   if (error !== undefined) {
-    const mensaje =
-      campoDeError(error, "message") || (typeof error === "string" ? error : "");
-    partes.push(
-      `name=${campoDeError(error, "name")}`,
-      `code=${campoDeError(error, "code")}`,
-      `responseCode=${campoDeError(error, "responseCode")}`,
-      `command=${campoDeError(error, "command")}`,
-      `message=${mensaje.slice(0, 200)}`,
-    );
+    const ctor =
+      error !== null ? ((error as { constructor?: { name?: string } }).constructor?.name ?? "") : "";
+    partes.push(`typeof=${typeof error}`, `ctor=${ctor}`);
+    if (error instanceof Error) {
+      partes.push(
+        `name=${campoDeError(error, "name")}`,
+        `code=${campoDeError(error, "code")}`,
+        `responseCode=${campoDeError(error, "responseCode")}`,
+        `command=${campoDeError(error, "command")}`,
+        `message=${campoDeError(error, "message").slice(0, 200)}`,
+      );
+    }
   }
   console.error(`[api/contacto] ${partes.join(" ")}`);
 }
@@ -136,25 +173,29 @@ async function manejarSolicitud(request: Request): Promise<Response> {
 
   const faltan = variablesFaltantes();
   if (faltan.length > 0) {
-    registrarFallo();
-    return respuesta(500, RESPUESTA_ERROR_INTERNO);
+    registrarFallo("config", undefined, faltan);
+    return respuesta(500, { ...RESPUESTA_ERROR_INTERNO, diag: diagDe("config", undefined, faltan) });
   }
 
-  const puerto = Number(process.env.SMTP_PORT);
-  if (!Number.isInteger(puerto) || (puerto !== 465 && puerto !== 587)) {
-    registrarFallo();
-    return respuesta(500, RESPUESTA_ERROR_INTERNO);
+  const puerto = Number(variable("SMTP_PORT"));
+  if (!Number.isInteger(puerto) || puerto < 1 || puerto > 65535) {
+    const invalidas = ["SMTP_PORT"];
+    registrarFallo("config", undefined, invalidas);
+    return respuesta(500, {
+      ...RESPUESTA_ERROR_INTERNO,
+      diag: diagDe("config", undefined, invalidas),
+    });
   }
 
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
+    host: variable("SMTP_HOST"),
     port: puerto,
     // 465 = TLS implícito (secure). 587 = STARTTLS (secure false; nodemailer
     // negocia el upgrade). La verificación de certificados TLS queda activada.
     secure: puerto === 465,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: variable("SMTP_USER"),
+      pass: variable("SMTP_PASS"),
     },
   });
 
@@ -195,8 +236,8 @@ async function manejarSolicitud(request: Request): Promise<Response> {
 
   try {
     await transporter.sendMail({
-      from: `"Formulario web Dasein" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_TO,
+      from: `"Formulario web Dasein" <${variable("SMTP_USER")}>`,
+      to: variable("CONTACT_TO"),
       replyTo: email,
       subject: "Nueva solicitud de propuesta - Dasein Studio",
       text: texto,
@@ -204,10 +245,12 @@ async function manejarSolicitud(request: Request): Promise<Response> {
     });
     return respuesta(200, RESPUESTA_OK);
   } catch (error) {
-    registrarFallo(error);
+    registrarFallo("enviar", error);
     return respuesta(502, {
       ok: false,
       error: "No pudimos enviar tu solicitud. Intenta de nuevo más tarde.",
+      // TODO: QUITAR diag tras diagnosticar
+      diag: diagDe("enviar", error),
     });
   }
 }
@@ -216,8 +259,12 @@ export async function POST(request: Request): Promise<Response> {
   try {
     return await manejarSolicitud(request);
   } catch (error) {
-    registrarFallo(error);
-    return respuesta(500, RESPUESTA_ERROR_INTERNO);
+    registrarFallo("excepcion-inesperada", error);
+    return respuesta(500, {
+      ...RESPUESTA_ERROR_INTERNO,
+      // TODO: QUITAR diag tras diagnosticar
+      diag: diagDe("excepcion-inesperada", error),
+    });
   }
 }
 

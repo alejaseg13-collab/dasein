@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function CtaEmpezar() {
   return (
     <section className="relative overflow-hidden">
-      <div className="relative z-10 px-6 pt-14 pb-10 md:px-[5.5%] md:pt-20 md:pb-24 md:max-w-[54%]">
+      <div className="relative z-10 px-6 pt-14 pb-10 md:px-[8%] md:pt-20 md:pb-24 md:max-w-[54%]">
         <h2 className="text-[40px] font-light leading-[1.06] text-white md:text-[clamp(50px,4.6vw,66px)]">
           <span className="block">¿Listo para</span>
           <span className="block font-daisy italic">empezar?</span>

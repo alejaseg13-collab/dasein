@@ -80,7 +80,7 @@ export default function ProyectoBlackhost() {
           <Header intro />
         </IntroProvider>
 
-        <main className="px-6 pt-[140px] md:px-[5.5%] md:pt-[150px]">
+        <main className="px-6 pt-[140px] md:px-[8%] md:pt-[150px]">
           {/* Blackhost Web + año */}
           <Reveal y={20} amount={0.6}>
             <div className="flex items-end justify-between gap-6">

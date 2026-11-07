@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { connection } from "next/server";
 
 // `runtime = "nodejs"` no está permitido con cacheComponents (Next 16) y no
 // hace falta: Node.js ya es el runtime por defecto de las rutas.
@@ -31,11 +32,35 @@ function respuesta(status: number, cuerpo: { ok: boolean; error?: string }): Res
   return Response.json(cuerpo, { status });
 }
 
-/** Logs solo en desarrollo y nunca con valores secretos ni datos personales. */
-function logDesarrollo(mensaje: string) {
-  if (process.env.NODE_ENV !== "production") {
-    console.error(`[api/contacto] ${mensaje}`);
+const VARIABLES_ENTORNO = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "CONTACT_TO"];
+
+function variablesFaltantes(): string[] {
+  return VARIABLES_ENTORNO.filter((nombre) => !process.env[nombre]);
+}
+
+function campoDeError(error: unknown, clave: string): string {
+  if (typeof error !== "object" || error === null) return "";
+  const valor = (error as Record<string, unknown>)[clave];
+  if (typeof valor === "string") return valor;
+  if (typeof valor === "number") return String(valor);
+  return "";
+}
+
+function registrarFallo(error?: unknown): void {
+  const faltan = variablesFaltantes();
+  const partes = [`faltan=[${faltan.join(", ")}]`];
+  if (error !== undefined) {
+    const mensaje =
+      campoDeError(error, "message") || (typeof error === "string" ? error : "");
+    partes.push(
+      `name=${campoDeError(error, "name")}`,
+      `code=${campoDeError(error, "code")}`,
+      `responseCode=${campoDeError(error, "responseCode")}`,
+      `command=${campoDeError(error, "command")}`,
+      `message=${mensaje.slice(0, 200)}`,
+    );
   }
+  console.error(`[api/contacto] ${partes.join(" ")}`);
 }
 
 function escapar(texto: string): string {
@@ -63,7 +88,7 @@ function superaElLimite(ip: string): boolean {
   return registro.cantidad > MAX_POR_VENTANA;
 }
 
-export async function POST(request: Request): Promise<Response> {
+async function manejarSolicitud(request: Request): Promise<Response> {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "desconocida";
 
   let cuerpo: Record<string, unknown>;
@@ -109,16 +134,15 @@ export async function POST(request: Request): Promise<Response> {
     return respuesta(400, RESPUESTA_INVALIDA);
   }
 
-  const nombresVariables = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "CONTACT_TO"];
-  const faltan = nombresVariables.filter((nombreVariable) => !process.env[nombreVariable]);
+  const faltan = variablesFaltantes();
   if (faltan.length > 0) {
-    logDesarrollo(`Faltan variables de entorno: ${faltan.join(", ")}`);
+    registrarFallo();
     return respuesta(500, RESPUESTA_ERROR_INTERNO);
   }
 
   const puerto = Number(process.env.SMTP_PORT);
   if (!Number.isInteger(puerto) || (puerto !== 465 && puerto !== 587)) {
-    logDesarrollo("SMTP_PORT debe ser 465 o 587");
+    registrarFallo();
     return respuesta(500, RESPUESTA_ERROR_INTERNO);
   }
 
@@ -180,12 +204,25 @@ export async function POST(request: Request): Promise<Response> {
     });
     return respuesta(200, RESPUESTA_OK);
   } catch (error) {
-    // Solo en desarrollo, sin datos personales ni contraseñas.
-    const detalle = error instanceof Error ? error.message.slice(0, 300) : "error desconocido";
-    logDesarrollo(`No se pudo enviar el correo: ${detalle}`);
+    registrarFallo(error);
     return respuesta(502, {
       ok: false,
       error: "No pudimos enviar tu solicitud. Intenta de nuevo más tarde.",
     });
   }
+}
+
+export async function POST(request: Request): Promise<Response> {
+  try {
+    return await manejarSolicitud(request);
+  } catch (error) {
+    registrarFallo(error);
+    return respuesta(500, RESPUESTA_ERROR_INTERNO);
+  }
+}
+
+export async function GET(): Promise<Response> {
+  await connection();
+  const faltan = variablesFaltantes();
+  return Response.json({ configurado: faltan.length === 0, faltan });
 }

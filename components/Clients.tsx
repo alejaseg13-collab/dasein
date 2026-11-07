@@ -8,21 +8,22 @@ const EASE_OUT = "easeOut" as const;
 
 /**
  * Logos reales de los clientes (SVG en /public/images, con su color propio).
- * `alto` equilibra el peso visual: los wordmarks largos van más bajos y los
- * logos compactos/cuadrados más altos, para que la línea se vea pareja.
+ * `cls` equilibra el peso visual: los wordmarks largos van más bajos y los
+ * logos compactos/cuadrados más altos, para que la línea se vea pareja
+ * (FCS crece en desktop porque si no apenas se nota; Vora va más contenido).
  */
-const LOGOS: { id: string; src: string; alt: string; width: number; height: number; alto: number }[] = [
-  { id: "astralem", src: "/images/Astralem.svg", alt: "Astralem", width: 156, height: 32, alto: 36 },
-  { id: "atria", src: "/images/Atria.svg", alt: "Atria", width: 206, height: 40, alto: 34 },
-  { id: "boko", src: "/images/Boko.svg", alt: "Boko", width: 157, height: 44, alto: 40 },
-  { id: "casa-facil", src: "/images/Casa-Facil.svg", alt: "Casa-Facil", width: 75, height: 62, alto: 56 },
-  { id: "ejepets", src: "/images/Ejepets.svg", alt: "Ejepets", width: 123, height: 42, alto: 44 },
-  { id: "fcs", src: "/images/FCS.svg", alt: "FCS", width: 79, height: 75, alto: 56 },
-  { id: "jabo", src: "/images/Jabo.svg", alt: "Jabo", width: 154, height: 39, alto: 38 },
-  { id: "lolarepa", src: "/images/Lolarepa.svg", alt: "Lolarepa", width: 59, height: 62, alto: 56 },
-  { id: "manuel-foto", src: "/images/Manuel%20Foto.svg", alt: "Manuel Foto", width: 151, height: 57, alto: 44 },
-  { id: "senda", src: "/images/Senda.svg", alt: "Senda", width: 145, height: 42, alto: 40 },
-  { id: "vora", src: "/images/Vora.svg", alt: "Vora", width: 113, height: 28, alto: 38 },
+const LOGOS: { id: string; src: string; alt: string; width: number; height: number; cls: string }[] = [
+  { id: "astralem", src: "/images/Astralem.svg", alt: "Astralem", width: 156, height: 32, cls: "h-[36px]" },
+  { id: "atria", src: "/images/Atria.svg", alt: "Atria", width: 206, height: 40, cls: "h-[34px]" },
+  { id: "boko", src: "/images/Boko.svg", alt: "Boko", width: 157, height: 44, cls: "h-[40px]" },
+  { id: "casa-facil", src: "/images/Casa-Facil.svg", alt: "Casa-Facil", width: 75, height: 62, cls: "h-[56px]" },
+  { id: "ejepets", src: "/images/Ejepets.svg", alt: "Ejepets", width: 123, height: 42, cls: "h-[44px]" },
+  { id: "fcs", src: "/images/FCS.svg", alt: "FCS", width: 79, height: 75, cls: "h-[56px] md:h-[66px]" },
+  { id: "jabo", src: "/images/Jabo.svg", alt: "Jabo", width: 154, height: 39, cls: "h-[38px]" },
+  { id: "lolarepa", src: "/images/Lolarepa.svg", alt: "Lolarepa", width: 59, height: 62, cls: "h-[56px]" },
+  { id: "manuel-foto", src: "/images/Manuel%20Foto.svg", alt: "Manuel Foto", width: 151, height: 57, cls: "h-[44px]" },
+  { id: "senda", src: "/images/Senda.svg", alt: "Senda", width: 145, height: 42, cls: "h-[40px]" },
+  { id: "vora", src: "/images/Vora.svg", alt: "Vora", width: 113, height: 28, cls: "h-[34px]" },
 ];
 
 const MARQUEE_CSS = `
@@ -82,7 +83,7 @@ export default function Clients() {
             <ul
               key={copy}
               aria-hidden={copy === 1}
-              className="flex shrink-0 items-center gap-8 pr-8 text-white/95 md:gap-11 md:pr-11"
+              className="flex shrink-0 items-center gap-10 pr-10 text-white/95 md:gap-14 md:pr-14"
             >
               {LOGOS.map((logo) => (
                 <li key={logo.id} className="flex shrink-0 items-center">
@@ -92,8 +93,7 @@ export default function Clients() {
                     width={logo.width}
                     height={logo.height}
                     unoptimized
-                    style={{ height: logo.alto }}
-                    className="w-auto"
+                    className={`w-auto ${logo.cls}`}
                   />
                 </li>
               ))}

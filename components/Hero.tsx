@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
   motion,
   useReducedMotion,
@@ -9,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useIntro } from "@/components/IntroProvider";
+import { useVideoEnVista } from "@/components/useVideoEnVista";
 import Header from "@/components/Header";
 
 const EASE_OUT = "easeOut" as const;
@@ -36,19 +37,8 @@ export default function Hero() {
 
   const heroRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (reduce) {
-      video.pause();
-      video.currentTime = 0;
-    } else {
-      video.play().catch(() => {
-        /* autoplay bloqueado por el navegador: queda en el primer frame */
-      });
-    }
-  }, [reduce]);
+  // Se reproduce solo en pantalla y se pausa al salir/ocultar la pestaña.
+  useVideoEnVista(videoRef);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -73,14 +63,17 @@ export default function Hero() {
         <div className="absolute inset-0">
           <video
             ref={videoRef}
-            src="/videos/Loop%20Astronauta.mp4"
+            poster="/videos/poster-astronauta.jpg"
             autoPlay
             muted
             loop
             playsInline
             aria-hidden="true"
             className="absolute inset-0 h-full w-full max-w-none object-cover object-[58%_45%] md:inset-auto md:left-[-10.5%] md:top-[-3.3%] md:h-auto md:w-[111%] md:[mask-image:linear-gradient(to_bottom,black_0%,black_80%,transparent_100%)] md:[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_80%,transparent_100%)]"
-          />
+          >
+            <source src="/videos/loop-astronauta.webm" type="video/webm" />
+            <source src="/videos/loop-astronauta.mp4" type="video/mp4" />
+          </video>
           <motion.div
             className="absolute left-[53%] top-[33%] h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(200,255,252,0.5),rgba(110,240,230,0.12),transparent)] blur-[40px] mix-blend-screen"
             {...glowPulse}

@@ -1,25 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { MotionConfig, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { MotionConfig } from "framer-motion";
 import Reveal from "@/components/Reveal";
+import { useVideoEnVista } from "@/components/useVideoEnVista";
 
 export default function NetworkSection() {
-  const reduce = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (reduce) {
-      video.pause();
-      video.currentTime = 0;
-    } else {
-      video.play().catch(() => {
-        /* autoplay bloqueado: queda en el primer frame */
-      });
-    }
-  }, [reduce]);
+  // Sin autoPlay: el hook lo arranca al entrar en pantalla y lo pausa al salir.
+  useVideoEnVista(videoRef);
   return (
     <MotionConfig reducedMotion="user">
       <section className="relative z-10 pt-[64px] pb-[72px] md:pt-[96px] md:pb-[96px]">
@@ -48,14 +37,17 @@ export default function NetworkSection() {
           <div className="aspect-video w-full">
             <video
               ref={videoRef}
-              src="/videos/Loop-ADN.mp4"
-              autoPlay
+              poster="/videos/poster-adn.jpg"
               muted
               loop
               playsInline
+              preload="none"
               aria-hidden="true"
               className="h-full w-full object-cover"
-            />
+            >
+              <source src="/videos/loop-adn.webm" type="video/webm" />
+              <source src="/videos/loop-adn.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </section>

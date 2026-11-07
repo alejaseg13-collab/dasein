@@ -234,16 +234,19 @@ function Contenido({
         <RoundedBox args={[cube, cube, cube]} radius={cube * 0.06} smoothness={5}>
           <MeshTransmissionMaterial
             transmission={1}
-            thickness={cube * 0.04}
+            thickness={cube * 0.08}
             roughness={0}
-            ior={1.45}
-            chromaticAberration={0}
+            ior={1.5}
+            chromaticAberration={0.06}
             anisotropicBlur={0}
-            distortion={0}
+            distortion={0.03}
             distortionScale={0.1}
             temporalDistortion={0}
             samples={isMobile ? 3 : 8}
             resolution={isMobile ? 512 : 2048}
+            envMapIntensity={1.1}
+            attenuationColor="#c2cccd"
+            attenuationDistance={cube * 0.12}
           />
         </RoundedBox>
       </group>

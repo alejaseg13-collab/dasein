@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import ContactForm from "@/components/ContactForm";
+import { useVideoEnVista } from "@/components/useVideoEnVista";
 
 // TODO: cuando llegue la imagen final del mosaico naranja, usar MOSAICO_SRC
 // con next/image + object-cover en lugar del fondo provisional CSS.
@@ -139,6 +140,10 @@ export default function Contact() {
   const reduce = useReducedMotion();
   const [activo, setActivo] = useState(0);
   const [pausado, setPausado] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  // El vídeo solo se reproduce con la tarjeta en pantalla (y no en reduce,
+  // donde ni siquiera se monta: se muestra la imagen).
+  useVideoEnVista(videoRef);
 
   useEffect(() => {
     if (reduce || pausado) return;
@@ -183,17 +188,19 @@ export default function Contact() {
               />
             ) : (
               <video
+                ref={videoRef}
                 className="absolute inset-0 z-[1] h-full w-full object-cover"
-                src="/videos/form-video.mp4"
                 poster="/images/flor_formulario.png"
-                autoPlay
                 muted
                 loop
                 playsInline
-                preload="auto"
+                preload="none"
                 aria-hidden="true"
                 tabIndex={-1}
-              />
+              >
+                <source src="/videos/form-video.webm" type="video/webm" />
+                <source src="/videos/form-video.mp4" type="video/mp4" />
+              </video>
             )}
 
             {!reduce && (

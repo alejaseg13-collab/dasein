@@ -139,7 +139,10 @@ export default function Stats() {
             soluciones sencillas y potentes. Soluciones tecnológicas a la medida de tu visión.
           </motion.p>
 
-          <div className="mt-12 flex justify-between md:mt-16">
+          {/* Misma medida que el párrafo: sin tope, en pantallas grandes el
+              justify-between estiraba las cifras hasta el extremo (hueco de
+              +1000px a 4K) y "+4" salía del bloque de contenido. */}
+          <div className="mt-12 flex max-w-[640px] justify-between md:mt-16">
             {STATS.map((stat, i) => (
               <Stat key={stat.etiqueta} {...stat} delay={0.3 + i * 0.1} />
             ))}

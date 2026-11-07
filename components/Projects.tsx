@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion, MotionConfig, useInView, useReducedMotion } from "framer-motion";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { projects, type Project } from "@/data/projects";
@@ -11,23 +12,32 @@ const EASE_INOUT = [0.65, 0, 0.35, 1] as const;
 const SLIDE = 0.9;
 
 function ProjectCard({ project }: { project: Project }) {
-  return (
-    <div className="w-[var(--card)]">
+  const contenido = (
+    <>
       <div className="group relative aspect-[1.64/1] w-full overflow-hidden">
         <Image
           src={project.imagen}
           alt={project.alt}
           fill
           sizes="(min-width: 768px) 60vw, 86vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+          className={`object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] ${project.imgClass ?? ""}`}
         />
       </div>
       <div className="mt-3 flex w-full items-baseline justify-between text-[13px] text-white md:mt-4 md:text-[16px]">
         <span className="font-normal">{project.anio}</span>
         <span className="font-semibold uppercase">{project.nombre}</span>
       </div>
-    </div>
+    </>
   );
+
+  if (project.href) {
+    return (
+      <Link href={project.href} className="block w-[var(--card)]">
+        {contenido}
+      </Link>
+    );
+  }
+  return <div className="w-[var(--card)]">{contenido}</div>;
 }
 
 function Arrow() {

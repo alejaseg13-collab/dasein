@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 151.2 151.2">
+  <!-- Isotipo Dasein sin fondo: blanco en tema oscuro, negro en tema claro. -->
+  <style>
+    .m {
+      fill: #ffffff;
+      stroke: #ffffff;
+      stroke-miterlimit: 10;
+      stroke-width: 0.75px;
+    }
+    @media (prefers-color-scheme: light) {
+      .m {
+        fill: #000000;
+        stroke: #000000;
+      }
+    }
+  </style>
+  <g class="m">
+    <rect x="20.45" y="20.45" width="20.08" height="20.07" rx="1.38" ry="1.38" />
+    <rect x="60.6" y="0.38" width="20.08" height="40.14" rx="1.38" ry="1.38" />
+    <rect x="100.75" y="20.45" width="20.07" height="20.07" rx="1.38" ry="1.38" />
+    <rect x="20.45" y="100.74" width="20.08" height="20.08" rx="1.38" ry="1.38" />
+    <rect x="0.38" y="60.6" width="40.15" height="20.07" rx="1.38" ry="1.38" />
+    <rect x="100.75" y="60.6" width="40.15" height="20.07" rx="1.38" ry="1.38" />
+    <rect x="100.75" y="100.74" width="20.07" height="20.08" rx="1.38" ry="1.38" />
+    <rect x="60.6" y="100.74" width="20.08" height="40.15" rx="1.38" ry="1.38" />
+  </g>
+</svg>

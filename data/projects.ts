@@ -28,12 +28,14 @@ export const projects: Project[] = [
     anio: "© 2026.",
     imagen: "/images/proyecto-scalla.webp",
     alt: "Portátil mostrando la interfaz de SCALLA UI",
+    href: "/proyectos/scalla",
   },
   {
     nombre: "CASA FÁCIL",
     anio: "© 2026.",
     imagen: "/images/casafacil-portada.png",
     alt: "Escenario iluminado con el mensaje En Casa Fácil tú eres el protagonista y el logotipo de Casa Fácil",
+    href: "/proyectos/casa-facil",
     // El recorte central del carrusel (1.64:1) cortaría la franja inferior
     // con el teléfono y los logotipos: se alinea el recorte al pie.
     imgClass: "object-bottom",
@@ -43,5 +45,6 @@ export const projects: Project[] = [
     anio: "© 2026.",
     imagen: "/images/portada-2.png",
     alt: "Tablet sobre fondo naranja con la página de BlackHost: Transformamos inversión en ventas reales",
+    href: "/proyectos/blackhost",
   },
 ];

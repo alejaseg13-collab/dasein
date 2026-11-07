@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import IntroProvider from "@/components/IntroProvider";
 import Header from "@/components/Header";
+import CtaEmpezar from "@/components/CtaEmpezar";
 import Footer from "@/components/Footer";
 
 const clashDisplay = localFont({
@@ -20,7 +21,7 @@ const EASE_OUT = "easeOut" as const;
  * Caso de estudio de VORA: las secciones que exportó el diseñador
  * (vora1…vora9, en WebP pre-comprimido con ffmpeg y servidas estáticas),
  * apiladas en ese orden y a sangre entre sí, pero insetadas sobre el fondo
- * verde (los márgenes laterales dejan ver el fondo normal de la página).
+ * plano (los márgenes laterales dejan ver el fondo normal de la página).
  * El cierre ("Gracias por profundizar en Vora") ya viene en vora9.
  */
 const SECCIONES: { src: string; width: number; height: number; alt: string }[] = [
@@ -84,19 +85,7 @@ export default function ProyectoVora() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative overflow-hidden bg-[#08090b]">
-      {/* Fondo verde detrás de todo (se ve en los márgenes de la página). */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <Image
-          src="/images/fondos/fondo-1-verde.png"
-          alt=""
-          fill
-          unoptimized
-          sizes="100vw"
-          className="object-fill"
-        />
-      </div>
-
+    <div className="relative overflow-hidden bg-[#0B0D13]">
       <div className="relative">
         <IntroProvider>
           <Header intro />
@@ -159,18 +148,7 @@ export default function ProyectoVora() {
           </div>
         </main>
 
-        {/* Banda verde de transición: el fondo de la página asoma entre la
-            última imagen y el footer (misma lumina del verde del inicio). */}
-        <div className="relative h-24 overflow-hidden" aria-hidden="true">
-          <Image
-            src="/images/fondos/fondo-1-verde.png"
-            alt=""
-            fill
-            unoptimized
-            sizes="100vw"
-            className="object-cover object-top [mask-image:linear-gradient(to_bottom,transparent_0,black_32px)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0,black_32px)]"
-          />
-        </div>
+        <CtaEmpezar />
 
         <Footer />
       </div>

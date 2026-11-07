@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { EMAIL, FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL, PHONE, WHATSAPP_URL } from "@/lib/contact";
 
@@ -95,14 +96,16 @@ export default function Footer() {
     <footer className="relative z-10 min-h-[380px] bg-black px-[5.5%] pb-[48px] pt-[56px] lg:grid lg:grid-cols-[1fr_auto] lg:pt-[72px]">
       <div className="flex flex-col">
         <motion.div {...enter(0)}>
-          <Image
-            src={LOGO_SRC}
-            alt="Dasein Studio"
-            width={300}
-            height={74}
-            unoptimized
-            className="h-auto w-[210px] md:w-[300px]"
-          />
+          <Link href="/" className="block">
+            <Image
+              src={LOGO_SRC}
+              alt="Dasein Studio"
+              width={300}
+              height={74}
+              unoptimized
+              className="h-auto w-[210px] md:w-[300px]"
+            />
+          </Link>
         </motion.div>
 
         <div className="mt-14 lg:mt-auto lg:pt-14">

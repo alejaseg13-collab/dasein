@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useIntro } from "@/components/IntroProvider";
@@ -55,7 +56,7 @@ export default function Header({ intro = false }: { intro?: boolean }) {
   return (
     <header className="absolute inset-x-0 top-0 z-40 px-5 pt-7 sm:px-6 md:px-[5.5%] md:pt-[38px]">
       <div className="flex items-center justify-between gap-6">
-        <span className="block overflow-hidden">
+        <Link href="/" className="block overflow-hidden">
           <motion.span className="block" {...cae(1.3)}>
             <Image
               src="/logo/logo-dasein-horizontal-studio.svg"
@@ -66,7 +67,7 @@ export default function Header({ intro = false }: { intro?: boolean }) {
               className="block h-[30px] w-auto md:h-[32px]"
             />
           </motion.span>
-        </span>
+        </Link>
 
         <div className="hidden md:block">
           <span className="block overflow-hidden">
@@ -101,7 +102,7 @@ export default function Header({ intro = false }: { intro?: boolean }) {
         </div>
 
         <motion.a
-          href="#contacto"
+          href="/#contacto"
           initial={intro && !reduce ? { opacity: 0 } : false}
           animate={intro && !reduce ? { opacity: running ? 1 : 0 } : undefined}
           whileHover={reduce ? undefined : { y: -4 }}

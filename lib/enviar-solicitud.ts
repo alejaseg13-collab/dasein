@@ -10,10 +10,11 @@ const TIMEOUT_MS = 15000;
 
 /**
  * Envía la solicitud a Netlify Forms (form-name "contacto") como
- * application/x-www-form-urlencoded a la raíz del sitio. Se corta a los 15 s
- * con AbortController y devuelve ok:false en cualquier fallo (red, timeout o
- * respuesta no exitosa); el formulario conserva lo que se escribió para poder
- * reintentar.
+ * application/x-www-form-urlencoded al archivo estático /__forms.html, que es
+ * el objetivo que Netlify reconoce (ver public/__forms.html). Se corta a los
+ * 15 s con AbortController y devuelve ok:false en cualquier fallo (red,
+ * timeout o respuesta no exitosa); el formulario conserva lo que se escribió
+ * para poder reintentar.
  */
 export async function enviarSolicitud(
   datos: SolicitudDatos,
@@ -30,7 +31,7 @@ export async function enviarSolicitud(
     cuerpo.set("proyecto", datos.proyecto);
     cuerpo.set("privacidad", datos.privacidad ? "on" : "");
     cuerpo.set("contacto_alt", contactoAlt);
-    const respuesta = await fetch("/", {
+    const respuesta = await fetch("/__forms.html", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: cuerpo.toString(),

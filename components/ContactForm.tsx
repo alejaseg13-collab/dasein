@@ -144,15 +144,7 @@ export default function ContactForm() {
           ¡Gracias! Recibimos tu solicitud y te responderemos pronto.
         </motion.p>
       ) : (
-        <form
-          name="contacto"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="contacto_alt"
-          noValidate
-          onSubmit={onSubmit}
-          className="space-y-5"
-        >
+        <form name="contacto" method="POST" noValidate onSubmit={onSubmit} className="space-y-5">
           <input type="hidden" name="form-name" value="contacto" />
           <input
             type="text"

@@ -1,0 +1,16 @@
+<html>
+  <head></head>
+  <body>
+    <!-- Detección del formulario para Netlify Forms (el runtime de Next no
+         genera HTML estático; este archivo es el que Netlify escanea). -->
+    <form name="contacto" data-netlify="true" netlify-honeypot="contacto_alt" hidden>
+      <input type="hidden" name="form-name" value="contacto" />
+      <input type="text" name="contacto_alt" />
+      <input name="nombre" type="text" />
+      <input name="correo" type="text" />
+      <input name="servicio" type="text" />
+      <textarea name="proyecto"></textarea>
+      <input name="privacidad" type="checkbox" />
+    </form>
+  </body>
+</html>

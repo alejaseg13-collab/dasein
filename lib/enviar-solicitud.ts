@@ -9,10 +9,11 @@ export interface SolicitudDatos {
 const TIMEOUT_MS = 15000;
 
 /**
- * Envía la solicitud a la ruta API /api/contacto (SMTP con nodemailer).
- * Se corta a los 15 s con AbortController y devuelve ok:false en cualquier
- * fallo (red, timeout o respuesta no exitosa); el formulario conserva lo
- * que se escribió para poder reintentar.
+ * Envía la solicitud a Netlify Forms (form-name "contacto") como
+ * application/x-www-form-urlencoded a la raíz del sitio. Se corta a los 15 s
+ * con AbortController y devuelve ok:false en cualquier fallo (red, timeout o
+ * respuesta no exitosa); el formulario conserva lo que se escribió para poder
+ * reintentar.
  */
 export async function enviarSolicitud(
   datos: SolicitudDatos,
@@ -21,21 +22,21 @@ export async function enviarSolicitud(
   const controlador = new AbortController();
   const reloj = setTimeout(() => controlador.abort(), TIMEOUT_MS);
   try {
-    const respuesta = await fetch("/api/contacto", {
+    const cuerpo = new URLSearchParams();
+    cuerpo.set("form-name", "contacto");
+    cuerpo.set("nombre", datos.nombre);
+    cuerpo.set("correo", datos.correo);
+    cuerpo.set("servicio", datos.servicio);
+    cuerpo.set("proyecto", datos.proyecto);
+    cuerpo.set("privacidad", datos.privacidad ? "on" : "");
+    cuerpo.set("contacto_alt", contactoAlt);
+    const respuesta = await fetch("/", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nombre: datos.nombre,
-        email: datos.correo,
-        servicio: datos.servicio,
-        mensaje: datos.proyecto,
-        consentimiento: datos.privacidad,
-        contacto_alt: contactoAlt,
-      }),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: cuerpo.toString(),
       signal: controlador.signal,
     });
-    const datosRespuesta = (await respuesta.json().catch(() => null)) as { ok?: boolean } | null;
-    return { ok: respuesta.ok && datosRespuesta?.ok === true };
+    return { ok: respuesta.ok };
   } catch {
     return { ok: false };
   } finally {

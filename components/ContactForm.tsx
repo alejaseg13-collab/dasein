@@ -144,7 +144,16 @@ export default function ContactForm() {
           ¡Gracias! Recibimos tu solicitud y te responderemos pronto.
         </motion.p>
       ) : (
-        <form noValidate onSubmit={onSubmit} className="space-y-5">
+        <form
+          name="contacto"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="contacto_alt"
+          noValidate
+          onSubmit={onSubmit}
+          className="space-y-5"
+        >
+          <input type="hidden" name="form-name" value="contacto" />
           <input
             type="text"
             name="contacto_alt"
@@ -159,6 +168,7 @@ export default function ContactForm() {
             {etiqueta("contacto-nombre", "Tu nombre")}
             <input
               id="contacto-nombre"
+              name="nombre"
               type="text"
               autoComplete="name"
               placeholder="Ingresa tu nombre completo"
@@ -175,6 +185,7 @@ export default function ContactForm() {
             {etiqueta("contacto-correo", "Tu correo electrónico")}
             <input
               id="contacto-correo"
+              name="correo"
               type="email"
               autoComplete="email"
               placeholder="Ejemplo: nombre@dominio.com"
@@ -192,6 +203,7 @@ export default function ContactForm() {
             <div className="relative">
               <select
                 id="contacto-servicio"
+                name="servicio"
                 value={valores.servicio}
                 onChange={(e) => actualiza("servicio", e.target.value)}
                 aria-invalid={Boolean(errores.servicio)}
@@ -225,6 +237,7 @@ export default function ContactForm() {
             {etiqueta("contacto-proyecto", "Háblanos un poco más de tu proyecto")}
             <textarea
               id="contacto-proyecto"
+              name="proyecto"
               placeholder="Escribe aquí…"
               value={valores.proyecto}
               onChange={(e) => actualiza("proyecto", e.target.value)}
@@ -242,6 +255,7 @@ export default function ContactForm() {
             >
               <input
                 id="contacto-privacidad"
+                name="privacidad"
                 type="checkbox"
                 checked={valores.privacidad}
                 onChange={(e) => actualiza("privacidad", e.target.checked)}

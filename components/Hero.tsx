@@ -51,11 +51,11 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-[100svh] w-full overflow-hidden bg-[#08090b] md:aspect-[1512/1323]"
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#08090b] md:aspect-[1512/1323]"
     >
       <motion.div
         data-intro-clip
-        className="absolute inset-0"
+        className="relative flex min-h-[100svh] flex-col md:absolute md:inset-0 md:min-h-0"
         initial={{ clipPath: CLIP_RECT, opacity: 0 }}
         animate={{ clipPath: running ? CLIP_FULL : CLIP_RECT, opacity: running ? 1 : 0 }}
         transition={{ duration: 1.2, ease: EASE_INOUT, delay: 0.6 }}
@@ -148,7 +148,7 @@ export default function Hero() {
         </h1>
       </div>
 
-      <div className="absolute inset-x-0 bottom-10 z-30 flex flex-col gap-6 px-6 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:flex-row md:items-center md:justify-between md:gap-8 md:px-[5.5%]">
+      <div className="relative inset-x-0 z-30 mt-auto flex w-full flex-col gap-6 px-6 pb-10 pt-8 md:absolute md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:flex-row md:items-center md:justify-between md:gap-8 md:px-[5.5%] md:pb-0 md:pt-0">
         <motion.div
           data-intro
           initial={reduce ? false : { opacity: 0, y: 24 }}

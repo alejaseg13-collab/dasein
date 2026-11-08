@@ -87,7 +87,7 @@ export default function ClosingCta() {
   });
 
   return (
-    <section className="relative z-10 flex min-h-[90svh] items-center justify-center overflow-hidden px-4 py-24 md:px-[5.5%]">
+    <section className="relative z-10 flex min-h-[90svh] flex-col items-center justify-center overflow-hidden px-4 py-24 md:flex-row md:px-[5.5%]">
       <div aria-hidden="true" className="absolute left-[4.7%] top-1/2 hidden -translate-y-1/2 md:block">
         <Dots pattern={[false, true, false]} invert={invert} />
       </div>
@@ -97,7 +97,7 @@ export default function ClosingCta() {
 
       <h2
         style={{ opacity: htmlVisible ? 1 : 0 }}
-        className={`relative z-10 text-center text-[48px] uppercase leading-[1.05] tracking-[-0.01em] text-white md:text-[clamp(64px,7.2vw,108px)]`}
+        className={`relative z-30 text-center text-[clamp(36px,12vw,48px)] uppercase leading-[1.05] tracking-[-0.01em] text-white md:z-10 md:text-[clamp(64px,7.2vw,108px)]`}
       >
         <motion.span {...enter(0)} className={`block font-extrabold ${sharpBold.className}`}>
           Demos forma
@@ -111,12 +111,12 @@ export default function ClosingCta() {
         </motion.span>
       </h2>
 
-      {/* Móvil: solo el texto (el prisma tapaba el titular). Desktop: prisma. */}
-      <div className="pointer-events-none absolute inset-0 z-20 hidden items-center justify-center md:flex">
+      {/* El prisma va detrás del titular (z-20 < z-30): se ve sin tapar el texto. */}
+      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
         <Prism onFallback={mostrarFallback} />
       </div>
 
-      <div className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-8 px-4 md:bottom-[6%] md:flex-row md:items-end md:justify-between md:px-[5.5%]">
+      <div className="relative z-20 mt-10 flex w-full flex-col items-center gap-8 px-4 md:absolute md:inset-x-0 md:bottom-[6%] md:mt-0 md:flex-row md:items-end md:justify-between md:px-[5.5%]">
         <motion.p
           {...enter(0.6)}
           className="max-w-[250px] text-center text-[17px] font-light leading-[1.25] text-white md:text-left md:text-[24px]"

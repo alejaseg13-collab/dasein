@@ -111,7 +111,8 @@ export default function ClosingCta() {
         </motion.span>
       </h2>
 
-      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+      {/* Móvil: solo el texto (el prisma tapaba el titular). Desktop: prisma. */}
+      <div className="pointer-events-none absolute inset-0 z-20 hidden items-center justify-center md:flex">
         <Prism onFallback={mostrarFallback} />
       </div>
 

@@ -68,6 +68,8 @@ function Contenido({
   const [familias, setFamilias] = useState(false);
   const [tick, setTick] = useState(0);
   const { gl, invalidate } = useThree();
+  // Móvil: cubo exactamente al centro (sin el alzado de30px de desktop).
+  const yBase = isMobile ? 0 : CUBE_Y;
 
   // Carga de la fuente del titular (una sola vez, aunque el padre re-renderice).
   // Si falla, el HTML queda como titular de respaldo.
@@ -189,7 +191,7 @@ function Contenido({
     const g = group.current;
     if (g) {
       g.rotation.set(BASE_X + ang.current.x, BASE_Y + ang.current.y, BASE_Z);
-      g.position.y = CUBE_Y + Math.sin(t * 1.2) * FLOAT_PX;
+      g.position.y = yBase + Math.sin(t * 1.2) * FLOAT_PX;
       const e = Math.min(1, t / 1.2);
       g.scale.setScalar(0.94 + 0.06 * (1 - Math.pow(1 - e, 3)));
     }
@@ -230,7 +232,7 @@ function Contenido({
         <Lightformer form="ring" intensity={11} position={[-2, 4, 4]} scale={3} color="#7de8ff" />
       </Environment>
 
-      <group ref={group} position={[0, CUBE_Y, 0]}>
+          <group ref={group} position={[0, yBase, 0]}>
         <RoundedBox args={[cube, cube, cube]} radius={cube * 0.06} smoothness={5}>
           <MeshTransmissionMaterial
             transmission={1}
@@ -288,7 +290,7 @@ export default function GlassScene({
 
   const isMobile = width < 768;
   const fontSize = isMobile ? 48 : Math.min(108, Math.max(64, width * 0.072));
-  const cube = isMobile ? 170 : width * 0.24;
+  const cube = isMobile ? 130 : width * 0.24;
 
   useEffect(() => {
     const el = host.current;

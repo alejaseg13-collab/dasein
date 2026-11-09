@@ -112,8 +112,9 @@ export default function ClosingCta() {
       </h2>
 
       {/* El prisma va detrás del titular (z-20 < z-30), centrado en ambos ejes.
-          En móvil se achica al72%; desktop sin transformar. */}
-      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center scale-[0.72] md:scale-100 md:translate-y-0">
+          El tamaño/posición se controlan en GlassScene (sin CSS transform,
+          que rompía la medición del canvas de WebGL). */}
+      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
         <Prism onFallback={mostrarFallback} />
       </div>
 

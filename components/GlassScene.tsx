@@ -68,8 +68,9 @@ function Contenido({
   const [familias, setFamilias] = useState(false);
   const [tick, setTick] = useState(0);
   const { gl, invalidate } = useThree();
-  // Móvil: cubo exactamente al centro (sin el alzado de30px de desktop).
-  const yBase = isMobile ? 0 : CUBE_Y;
+  // Móvil: el cubo se centra sobre el titular (no sobre la sección) para que
+  // cubra únicamente "Demos forma..." sin bajar al párrafo. Desktop: +30.
+  const yBase = isMobile ? 95 : CUBE_Y;
 
   // Carga de la fuente del titular (una sola vez, aunque el padre re-renderice).
   // Si falla, el HTML queda como titular de respaldo.

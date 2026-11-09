@@ -111,8 +111,9 @@ export default function ClosingCta() {
         </motion.span>
       </h2>
 
-      {/* El prisma va detrás del titular (z-20 < z-30): se ve sin tapar el texto. */}
-      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+      {/* El prisma va detrás del titular (z-20 < z-30). En móvil se achica y
+          sube para que solo cubra "Demos forma..."; desktop sin transformar. */}
+      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center scale-[0.72] -translate-y-[18%] md:scale-100 md:translate-y-0">
         <Prism onFallback={mostrarFallback} />
       </div>
 

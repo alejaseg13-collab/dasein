@@ -97,7 +97,7 @@ export default function ClosingCta() {
 
       <h2
         style={{ opacity: htmlVisible ? 1 : 0 }}
-        className={`relative z-30 text-center text-[clamp(36px,12vw,48px)] uppercase leading-[1.05] tracking-[-0.01em] text-white md:z-10 md:text-[clamp(64px,7.2vw,108px)]`}
+        className={`relative z-30 text-center text-[clamp(30px,12vw,48px)] uppercase leading-[1.05] tracking-[-0.01em] text-white md:z-10 md:text-[clamp(64px,7.2vw,108px)]`}
       >
         <motion.span {...enter(0)} className={`block font-extrabold ${sharpBold.className}`}>
           Demos forma
